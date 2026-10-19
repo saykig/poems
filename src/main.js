@@ -1,89 +1,185 @@
 import { PageFlip } from 'page-flip';
 import '@fontsource/im-fell-english/400.css';
 import '@fontsource/im-fell-english/400-italic.css';
+import poems from '../content/poems.json';
 import './style.css';
 
-const book = document.querySelector('#book');
 const ornament = '<span class="ornament" aria-hidden="true">❦</span>';
-const pages = [
-  ['cover', `<div class="cover-frame"><span class="cover-top">A collection by Sara</span><h2>Selected<br>Poems</h2><div class="cover-picture" role="img" aria-label="An illustrated cottage garden"></div>${ornament}<p class="cover-author">SARA</p></div>`, true],
-  ['bookplate', `<div class="bookplate-inner">${ornament}<p>From the bookshelf of</p><h2>Sara</h2><div class="bookplate-line"></div><p class="small-italic">A place for words<br>to make themselves at home.</p></div>`, false],
-  ['title-page', `<p class="running-title">SELECTED POEMS</p><h2>In these pages</h2><div class="toc"><button data-page="3"><span>A place for a poem</span><span>3</span></button><button data-page="5"><span>A moment in the garden</span><span>5</span></button></div><p class="edition-note">The beginning of a collection.<br>More words will find their way here.</p>${ornament}<span class="page-number">2</span>`, false],
-  ['poem-page', `<p class="running-title">SELECTED POEMS</p><div class="poem"><h2>A place for a poem</h2><p>Your poem will live here,<br>with room around each line,<br>and a little world<br>growing at its edges.</p><p class="sample-label">Sample layout · awaiting Sara’s poem</p></div><div class="page-garden"></div><span class="page-number">3</span>`, false],
-  ['illustration-page', `<div class="vignette" role="img" aria-label="A cottage garden filled with flowers, and a child with a red kite"></div><p class="art-caption">A little room for wonder.</p><span class="page-number">4</span>`, false],
-  ['panorama panorama-left', `<span class="sr-only">Left half of a continuous garden illustration, with a birch tree and wildflowers.</span><span class="page-number">5</span>`, false],
-  ['panorama panorama-right', `<span class="sr-only">Right half of the garden illustration, with a cottage and a child flying a kite.</span><span class="page-number">6</span>`, false],
-  ['last-page', `${ornament}<h2>To be continued.</h2><p>There is always room<br>for another poem.</p><span class="page-number">7</span>`, false],
-  ['bookplate', `<div class="bookplate-inner">${ornament}<p>Selected Poems</p><h2>Sara</h2><p class="small-italic">An illustrated collection<br>in the making.</p></div>`, false],
-  ['cover back-cover', `<div class="cover-frame">${ornament}<p>Selected Poems</p><span>SARA</span></div>`, true],
-];
-for (const [classes, html, hard] of pages) {
+const asset = name => `${import.meta.env.BASE_URL}art/${name}`;
+const art = {
+  'patterns-against-distance': ['stars.png', 'A solitary figure beneath three bright stars above a dark lake.'],
+  'polaroids': ['polaroids.png', 'Instant photographs of home and friends hanging above a desk in the evening light.'],
+  'i-miss': ['i-miss.jpeg', 'Clouds over a quiet intersection at sunset.'],
+  'the-stars-do-not-know': ['stars.png', 'The vast night sky above a small figure on a hill.'],
+  'i-wandered-through-the-sea': ['sea.png', 'A tiny sailboat among moonlit waves beneath a crescent moon.'],
+  'the-space-between-us': ['the-space-between-us-moon.png', 'A crescent moon over a waterfront at dusk.'],
+};
+const escape = text => text.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function lineHTML(line, index) {
+  return `<span class="poem-line${line.italic ? ' italic' : ''}" style="--indent:${line.indent}" data-line="${index}">${escape(line.text)}</span>`;
+}
+function stanzaHTML(stanza, offset = 0) {
+  return `<p class="stanza">${stanza.map((line, i) => lineHTML(line, offset + i)).join('')}</p>`;
+}
+function leaf(classes, html, poemId) {
   const page = document.createElement('article');
   page.className = `page ${classes}`;
-  if (hard) page.dataset.density = 'hard';
   page.innerHTML = html;
-  book.append(page);
+  if (poemId) page.dataset.poemId = poemId;
+  if (classes.includes('cover')) page.dataset.density = 'hard';
+  return page;
 }
-const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 const position = document.querySelector('#book-position');
+const stage = document.querySelector('.stage');
 const status = document.querySelector('#page-status');
-const prev = document.querySelector('#prev');
-const next = document.querySelector('#next');
-const open = document.querySelector('#open');
-let flip;
+const toggle = document.querySelector('#reading-toggle');
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+let flip, pages = [], book, previousWidth = 0;
+
+// Measure actual typeset stanzas at this viewport; move whole stanzas where possible.
+// If a stanza cannot fit on an empty leaf, split only between original lines.
+function paginate(poem, width, height) {
+  const probe = leaf('poem-page measuring', '<div class="poem-flow"></div>', poem.id);
+  Object.assign(probe.style, {width:`${width}px`,height:`${height}px`});
+  document.body.append(probe);
+  const flow = probe.querySelector('.poem-flow');
+  const chunks = [];
+  let offset = 0;
+  const heading = () => `<h2>${escape(poem.title)}</h2>${chunks.length ? '<span class="continuation">continued</span>' : ''}`;
+  flow.innerHTML = heading();
+  const fits = () => flow.scrollHeight <= flow.clientHeight + 1;
+  const save = () => { chunks.push(flow.innerHTML); flow.innerHTML = heading(); };
+  for (const stanza of poem.stanzas) {
+    const p = document.createElement('p'); p.className = 'stanza';
+    p.innerHTML = stanza.map((line, i) => lineHTML(line, offset + i)).join('');
+    const hadContent = Boolean(flow.querySelector('.stanza'));
+    flow.append(p);
+    if (!fits()) {
+      p.remove();
+      if (hadContent) save();
+      flow.append(p);
+      if (!fits()) {
+        p.remove();
+        let fragment = document.createElement('p'); fragment.className = 'stanza'; flow.append(fragment);
+        for (let i = 0; i < stanza.length; i++) {
+          const holder = document.createElement('span'); holder.innerHTML = lineHTML(stanza[i], offset + i);
+          const line = holder.firstElementChild; fragment.append(line);
+          if (!fits() && fragment.children.length > 1) {
+            line.remove(); save();
+            fragment = document.createElement('p'); fragment.className = 'stanza';
+            fragment.append(line); flow.append(fragment);
+          }
+        }
+      }
+    }
+    offset += stanza.length;
+  }
+  if (flow.querySelector('.stanza')) chunks.push(flow.innerHTML);
+  probe.remove();
+  return chunks.map(html => leaf('poem-page', `<div class="poem-flow">${html}</div>`, poem.id));
+}
+function artLeaf(poem, spreadSide) {
+  const [file, alt] = art[poem.id];
+  if (spreadSide) return leaf(`art-page panorama ${spreadSide}`, `<div class="panorama-art" style="background-image:url('${asset(file)}')" role="img" aria-label="${escape(alt)}"></div>`, poem.id);
+  return leaf('art-page', `<img class="poem-art ${poem.sourceImage ? 'source-photo' : ''}" src="${asset(file)}" alt="${escape(alt)}" draggable="false">`, poem.id);
+}
+function renderBook() {
+  const width = stage.clientWidth / (matchMedia('(max-width:700px)').matches ? 1 : 2);
+  if (Math.abs(previousWidth - width) < 1 && flip) return;
+  previousWidth = width;
+  const height = width * 580 / 430;
+  const oldPage = pages[flip?.getCurrentPageIndex() ?? 0];
+  const oldPoem = oldPage?.dataset.poemId;
+  const oldLine = Number(oldPage?.querySelector('[data-line]')?.dataset.line ?? 0);
+  if (flip) flip.destroy();
+  position.innerHTML = '<div id="book" tabindex="0" role="group" aria-label="Poetry book. Drag a corner or use the left and right arrow keys to turn pages."></div>';
+  book = position.querySelector('#book');
+  pages = [
+    leaf('cover', `<div class="cover-frame"><h2>SELECTED<br>POEMS</h2>${ornament}<p class="cover-author">SARA KIM</p></div>`),
+    leaf('bookplate', `<div class="bookplate-inner">${ornament}<p>Selected Poems</p><h2>Sara Kim</h2></div>`),
+    leaf('contents-page', '<div class="contents-inner"><h2>Contents</h2><nav class="toc" aria-label="Poems"></nav></div>'),
+  ];
+  const starts = [];
+  for (const poem of poems) {
+    starts.push(pages.length);
+    const poemPages = paginate(poem, width, height);
+    pages.push(...poemPages);
+    if (poemPages.length % 2) {
+      pages.push(art[poem.id] ? artLeaf(poem) : leaf('quiet-page', ornament, poem.id));
+    }
+    // A dedicated continuous seascape follows the poem that actually describes it.
+    if (poem.id === 'i-wandered-through-the-sea') {
+      pages.push(artLeaf(poem, 'panorama-left'), artLeaf(poem, 'panorama-right'));
+    } else if (poemPages.length % 2 === 0 && art[poem.id]) {
+      // Keep illustrations with their poem, on their own paired leaves.
+      pages.push(leaf('art-title', `<h2>${escape(poem.title)}</h2>${ornament}`, poem.id), artLeaf(poem));
+    }
+  }
+  pages.push(leaf('cover back-cover', `<div class="cover-frame">${ornament}<p class="cover-author">SARA KIM</p></div>`));
+  pages[2].querySelector('.toc').innerHTML = poems.map((poem, i) => `<button data-page="${starts[i]}"><span>${escape(poem.title)}</span><span>${starts[i]}</span></button>`).join('');
+  pages.forEach((p, i) => {
+    if (i > 0 && i < pages.length - 1) p.insertAdjacentHTML('beforeend', `<span class="page-number" aria-hidden="true">${i}</span>`);
+    book.append(p);
+  });
+  flip = new PageFlip(book, {width,height,size:'fixed',showCover:true,usePortrait:true,
+    maxShadowOpacity:.28,flippingTime:reducedMotion.matches ? 1 : 900,
+    mobileScrollSupport:false,showPageCorners:true,disableFlipByClick:true});
+  flip.on('init', sync); flip.on('flip', sync); flip.on('changeOrientation', sync);
+  flip.on('changeState', e => {
+    if (['user_fold','flipping'].includes(e.data) && flip.getCurrentPageIndex() === 0) position.classList.remove('closed');
+    if (e.data === 'read') sync();
+  });
+  flip.loadFromHTML(pages);
+  if (oldPoem) {
+    const index = pages.findIndex(p => p.dataset.poemId === oldPoem && [...p.querySelectorAll('[data-line]')].some(l => Number(l.dataset.line) === oldLine));
+    if (index >= 0) flip.turnToPage(index);
+  }
+  book.querySelectorAll('[data-page]').forEach(button => button.addEventListener('click', () => flip.turnToPage(Number(button.dataset.page))));
+}
 function sync() {
   const index = flip.getCurrentPageIndex();
   const portrait = flip.getOrientation() === 'portrait';
+  const closed = index === 0 || index === pages.length - 1;
   position.classList.toggle('closed', index === 0 && !portrait);
   position.classList.toggle('back-closed', index === pages.length - 1 && !portrait);
   position.classList.toggle('portrait', portrait);
-  prev.disabled = index === 0;
-  next.disabled = index >= pages.length - (portrait ? 1 : 2);
-  open.hidden = index !== 0;
-  status.hidden = index === 0;
-  status.textContent = index === pages.length - 1 ? 'Back cover' : portrait ? `${index} / 8` : `${index} — ${Math.min(index + 1, 8)}`;
-  document.querySelector('#invitation').textContent = index === 0 ? 'A little world between two covers.' : 'Stay awhile. Turn a page.';
-  document.querySelector('#gesture').textContent = index === 0 ? 'Pull the cover’s lower corner to begin' : 'Drag a corner · or use the arrow keys';
-  // Keep hidden leaves out of keyboard focus; the plain view provides an accessible reading alternative.
-  [...book.querySelectorAll('.page')].forEach((p, i) => p.querySelectorAll('button').forEach(b => b.tabIndex = i === index || (!portrait && i === index + 1) ? 0 : -1));
+  status.textContent = index === 0 ? 'Front cover' : index === pages.length - 1 ? 'Back cover' : `Pages ${index}${portrait ? '' : ` and ${index + 1}`}`;
+  document.querySelector('#gesture').textContent = index === 0 ? 'Pull the cover’s lower corner to begin' : 'Pull a page corner to turn';
+  document.querySelector('.toolbar').classList.toggle('on-cover', closed);
+  pages.forEach((p, i) => {
+    const visible = i === index || (!portrait && !closed && i === index + 1);
+    p.setAttribute('aria-hidden', String(!visible));
+    p.querySelectorAll('button').forEach(b => b.tabIndex = visible ? 0 : -1);
+  });
 }
-flip = new PageFlip(book, {
-  width: 430, height: 580, size: 'stretch', minWidth: 280, maxWidth: 430,
-  minHeight: 378, maxHeight: 580, showCover: true, usePortrait: true,
-  maxShadowOpacity: .28, flippingTime: reducedMotion.matches ? 1 : 1000,
-  mobileScrollSupport: false, showPageCorners: true, disableFlipByClick: true,
-});
-flip.on('init', sync);
-flip.on('flip', sync);
-flip.on('changeOrientation', sync);
-flip.on('changeState', e => {
-  if ((e.data === 'user_fold' || e.data === 'flipping') && flip.getCurrentPageIndex() === 0) position.classList.remove('closed');
-  if (e.data === 'read') sync();
-});
-flip.loadFromHTML(book.querySelectorAll('.page'));
 function turn(direction) {
-  if (direction > 0 && !next.disabled) reducedMotion.matches ? flip.turnToNextPage() : flip.flipNext();
-  if (direction < 0 && !prev.disabled) reducedMotion.matches ? flip.turnToPrevPage() : flip.flipPrev();
+  const index = flip.getCurrentPageIndex();
+  if (direction > 0 && index < pages.length - 1) reducedMotion.matches ? flip.turnToNextPage() : flip.flipNext();
+  if (direction < 0 && index > 0) reducedMotion.matches ? flip.turnToPrevPage() : flip.flipPrev();
 }
-prev.addEventListener('click', () => turn(-1));
-next.addEventListener('click', () => turn(1));
-open.addEventListener('click', () => turn(1));
-document.querySelectorAll('[data-page]').forEach(button => button.addEventListener('click', () => flip.turnToPage(Number(button.dataset.page))));
-document.querySelector('#contents').addEventListener('click', () => {
-  setReading(false); flip.turnToPage(1);
-});
-const toggle = document.querySelector('#reading-toggle');
+const readingView = document.querySelector('#reading-view');
+readingView.innerHTML = `<h2 class="reading-title">Selected Poems</h2><p class="byline">Sara Kim</p><nav class="reading-toc" aria-label="Poems">${poems.map(p => `<a href="#read-${p.id}">${escape(p.title)}</a>`).join('')}</nav>${poems.map(p => `<article id="read-${p.id}" class="reading-poem" data-poem-id="${p.id}"><h2>${escape(p.title)}</h2>${p.stanzas.map(stanza => stanzaHTML(stanza)).join('')}</article>`).join('')}`;
 function setReading(reading) {
-  document.querySelector('#reading-view').hidden = !reading;
+  readingView.hidden = !reading;
   document.querySelector('#experience').hidden = reading;
   toggle.setAttribute('aria-pressed', String(reading));
   toggle.textContent = reading ? 'Back to the book' : 'Reading view';
-  if (!reading) requestAnimationFrame(() => { flip.update(); sync(); });
+  if (!reading) requestAnimationFrame(() => { renderBook(); flip.update(); sync(); });
 }
 toggle.addEventListener('click', () => setReading(toggle.getAttribute('aria-pressed') !== 'true'));
+document.querySelector('#contents').addEventListener('click', () => {
+  setReading(false); requestAnimationFrame(() => flip.turnToPage(flip.getOrientation() === 'portrait' ? 2 : 1));
+});
 document.addEventListener('keydown', e => {
   if (toggle.getAttribute('aria-pressed') === 'true' || e.altKey || e.ctrlKey || e.metaKey) return;
   if (e.key === 'ArrowRight') { e.preventDefault(); turn(1); }
   if (e.key === 'ArrowLeft') { e.preventDefault(); turn(-1); }
   if (e.key === 'Home') { e.preventDefault(); flip.turnToPage(0); }
 });
+await document.fonts.ready;
+renderBook();
+let resizeTimer;
+new ResizeObserver(() => {
+  clearTimeout(resizeTimer);
+  if (!document.querySelector('#experience').hidden) resizeTimer = setTimeout(renderBook, 180);
+}).observe(stage);

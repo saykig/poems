@@ -1,13 +1,8 @@
 <!doctype html>
-<!-- THESIS: A poetry collection held as a tactile storybook. OWN-WORLD: Moss leather, gold tooling, ivory paper, antique ink and drawn gardens. STORY: Open, linger, pull a corner, discover another spread. FIRST VIEWPORT: A single centered closed volume and a quiet invitation below. FORM: User-pinned storybook, with a draggable spread as its primary interface. -->
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#e7e3d7"><meta name="description" content="Selected Poems by Sara — an illustrated book to open, explore, and linger in."><title>Selected Poems · Sara</title></head><body>
-<header><a class="signature" href="./">Sara’s bookshelf</a><button id="reading-toggle" aria-pressed="false">Reading view</button></header>
-<main>
-<h1 class="sr-only">Selected Poems by Sara</h1>
-<section id="experience" aria-label="Interactive poetry book">
-<div class="stage"><div class="book-position closed" id="book-position"><div id="book" aria-label="Drag a page corner to turn the page"></div></div></div>
-<div class="below-book"><p id="invitation">A little world between two covers.</p><div class="book-controls"><button id="prev" aria-label="Previous pages">←</button><button id="open">Open the book</button><span id="page-status" role="status" aria-live="polite" hidden>Cover</span><button id="next" aria-label="Next pages">→</button></div><p class="gesture" id="gesture">Pull the cover’s lower corner to begin</p></div>
-</section>
-<section id="reading-view" hidden aria-label="Plain reading view"><h2>Selected Poems</h2><p class="byline">by Sara</p><p>This book is waiting for its first poems.</p><p>The illustrated book currently shows a sample layout. Sara’s poems will appear here, with their original line breaks, when they are added.</p><img src="/art/garden.png" alt="A child flying a red kite in a flower-filled cottage garden"></section>
-</main><footer><span>Selected Poems <i>·</i> Sara</span><button id="contents">Contents</button><span>A book in the making</span></footer>
-<script type="module" src="/src/main.js"></script></body></html>
+<!-- A poetry book as the centerpiece: moss binding, gold type, ivory pages. The cover uses Times New Roman, no illustration, and the retained fleuron. Poetry is imported verbatim; only relevant artwork appears inside. -->
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#e7e3d7"><meta name="description" content="Selected Poems by Sara Kim — an illustrated collection of ten poems."><title>Selected Poems · Sara Kim</title></head><body>
+<header class="toolbar"><button id="contents">Contents</button><button id="reading-toggle" aria-pressed="false">Reading view</button></header>
+<main><h1 class="sr-only">Selected Poems by Sara Kim</h1>
+<section id="experience" aria-label="Interactive poetry book"><div class="stage"><div class="book-position closed" id="book-position"><div id="book" tabindex="0" role="group" aria-label="Poetry book. Drag a corner or use the left and right arrow keys to turn pages."></div></div></div><p class="gesture" id="gesture">Pull the cover’s lower corner to begin</p><span id="page-status" class="sr-only" role="status" aria-live="polite"></span></section>
+<section id="reading-view" hidden aria-label="Plain reading view"></section>
+<noscript><p>This book needs JavaScript for page turning. You can also <a href="https://sarakim23.vercel.app/writing/poetry">read Sara’s poems here</a>.</p></noscript></main><script type="module" src="/src/main.js"></script></body></html>
