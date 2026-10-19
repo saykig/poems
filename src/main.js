@@ -2,6 +2,7 @@ import { PageFlip } from 'page-flip';
 import '@fontsource/im-fell-english/400.css';
 import '@fontsource/im-fell-english/400-italic.css';
 import poems from '../content/poems.json';
+import illustratedSpreads from '../content/illustrated-spreads.json';
 import './style.css';
 
 const ornament = '<span class="ornament" aria-hidden="true">❦</span>';
@@ -83,6 +84,13 @@ function artLeaf(poem, spreadSide) {
   if (spreadSide) return leaf(`art-page panorama ${spreadSide}`, `<div class="panorama-art" style="background-image:url('${asset(file)}')" role="img" aria-label="${escape(alt)}"></div>`, poem.id);
   return leaf('art-page', `<img class="poem-art ${poem.sourceImage ? 'source-photo' : ''}" src="${asset(file)}" alt="${escape(alt)}" draggable="false">`, poem.id);
 }
+// Affinity exports are full page compositions; live text remains in Reading view.
+function exportedLeaves(poem) {
+  const spread = illustratedSpreads[poem.id];
+  if (!spread) return null;
+  return spread.pages.map((page, index) => leaf('exported-page',
+    `<img class="exported-art" src="${import.meta.env.BASE_URL}spreads/${escape(page.file)}" alt="${escape(page.description)}" draggable="false"><span class="sr-only">${escape(poem.title)}, illustrated page ${index + 1}. Complete poem available in Reading view.</span>`, poem.id));
+}
 function renderBook() {
   const width = stage.clientWidth / (matchMedia('(max-width:700px)').matches ? 1 : 2);
   if (Math.abs(previousWidth - width) < 1 && flip) return;
@@ -102,6 +110,11 @@ function renderBook() {
   const starts = [];
   for (const poem of poems) {
     starts.push(pages.length);
+    const exported = exportedLeaves(poem);
+    if (exported) {
+      pages.push(...exported);
+      continue;
+    }
     const poemPages = paginate(poem, width, height);
     pages.push(...poemPages);
     if (poemPages.length % 2) {
@@ -132,7 +145,8 @@ function renderBook() {
   flip.loadFromHTML(pages);
   if (oldPoem) {
     const index = pages.findIndex(p => p.dataset.poemId === oldPoem && [...p.querySelectorAll('[data-line]')].some(l => Number(l.dataset.line) === oldLine));
-    if (index >= 0) flip.turnToPage(index);
+    const restoredIndex = index >= 0 ? index : pages.findIndex(p => p.dataset.poemId === oldPoem);
+    if (restoredIndex >= 0) flip.turnToPage(restoredIndex);
   }
   book.querySelectorAll('[data-page]').forEach(button => button.addEventListener('click', () => flip.turnToPage(Number(button.dataset.page))));
 }
