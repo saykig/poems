@@ -10,7 +10,7 @@ const asset = name => `${import.meta.env.BASE_URL}art/${name}`;
 const art = {
   'patterns-against-distance': ['stars.png', 'A solitary figure beneath three bright stars above a dark lake.'],
   'polaroids': ['polaroids.png', 'Instant photographs of home and friends hanging above a desk in the evening light.'],
-  'i-wandered-through-the-sea': ['sea.png', 'A tiny sailboat among moonlit waves beneath a crescent moon.'],
+  'i-wandered-through-the-sea': ['sea-cutout-v1.png', 'A tiny sailboat among moonlit waves beneath a crescent moon.'],
 };
 const escape = text => text.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function lineHTML(line, index) {
@@ -84,16 +84,23 @@ function exportedLeaves(poem) {
   return spread.pages.map((page, index) => leaf('exported-page',
     `<img class="exported-art" src="${import.meta.env.BASE_URL}spreads/${escape(page.file)}" alt="${escape(page.description)}" draggable="false"><span class="sr-only">${escape(poem.title)}, illustrated page ${index + 1}. Complete poem available in Reading view.</span>`, poem.id));
 }
-function polaroidLeaves(poem) {
+function composedLeaves(poem) {
   let offset = 0;
   const stanzas = poem.stanzas.map(stanza => {
-    const html = stanzaHTML(stanza, offset);
-    offset += stanza.length;
-    return html;
+    const html = stanzaHTML(stanza, offset); offset += stanza.length; return html;
   });
+  const block = (from, to, cls) => `<div class="composition-text ${cls}">${stanzas.slice(from,to).join('')}</div>`;
+  if (poem.id === 'patterns-against-distance') {
+    const piece = kind => `<div class="pattern-piece ${kind}" aria-hidden="true"></div>`;
+    return [
+      leaf('poem-page pattern-composition', `<h2>${escape(poem.title)}</h2>${piece('night')}${block(0,4,'pattern-first')}${piece('hill')}`, poem.id),
+      leaf('poem-page pattern-composition', `${block(4,7,'pattern-second-top')}${piece('lake')}${block(7,10,'pattern-second-bottom')}`, poem.id),
+    ];
+  }
+  const painting = side => `<div class="polaroid-panorama ${side}" role="img" aria-label="A continuous painted string of memories, tied between ivy and lavender, with a sunlit window and writing desk."></div>`;
   return [
-    leaf('poem-page polaroid-composition', `<div class="polaroid-flow"><h2>${escape(poem.title)}</h2>${stanzas.slice(0,2).join('')}<img class="polaroid-cutout" src="${asset('polaroids-cutout-v1.png')}" alt="Three painted instant photographs of a garden, a lit window and the sea, hanging from a fine string." draggable="false">${stanzas.slice(2,5).join('')}</div>`, poem.id),
-    leaf('poem-page polaroid-composition polaroid-ending', `<div class="polaroid-flow">${stanzas.slice(5).join('')}</div>`, poem.id),
+    leaf('poem-page polaroid-composition', `<h2>${escape(poem.title)}</h2>${block(0,2,'polaroid-top')}${painting('panorama-left')}${block(2,5,'polaroid-bottom')}`, poem.id),
+    leaf('poem-page polaroid-composition', `${block(5,8,'polaroid-top')}${painting('panorama-right')}${block(8,10,'polaroid-bottom')}`, poem.id),
   ];
 }
 function renderBook() {
@@ -120,9 +127,9 @@ function renderBook() {
       pages.push(...exported);
       continue;
     }
-    const poemPages = poem.id === 'polaroids' ? polaroidLeaves(poem) : paginate(poem, width, height);
+    const poemPages = ['polaroids', 'patterns-against-distance'].includes(poem.id) ? composedLeaves(poem) : paginate(poem, width, height);
     pages.push(...poemPages);
-    if (art[poem.id] && poem.id !== 'polaroids') {
+    if (art[poem.id] && !['polaroids', 'patterns-against-distance'].includes(poem.id)) {
       const [file] = art[poem.id];
       poemPages.slice(0,2).forEach((page, i) => {
         const globalIndex = starts.at(-1) + i;
