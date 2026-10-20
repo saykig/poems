@@ -84,7 +84,7 @@ function artLeaf(poem, spreadSide) {
   if (spreadSide) return leaf(`art-page panorama ${spreadSide}`, `<div class="panorama-art" style="background-image:url('${asset(file)}')" role="img" aria-label="${escape(alt)}"></div>`, poem.id);
   return leaf('art-page', `<img class="poem-art ${poem.sourceImage ? 'source-photo' : ''}" src="${asset(file)}" alt="${escape(alt)}" draggable="false">`, poem.id);
 }
-// Affinity exports are full page compositions; live text remains in Reading view.
+// Exported designs are full page compositions; live text remains in Reading view.
 function exportedLeaves(poem) {
   const spread = illustratedSpreads[poem.id];
   if (!spread) return null;
