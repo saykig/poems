@@ -3,3 +3,6 @@ dist/
 .DS_Store
 
 __pycache__/
+
+# Affinity editing lock files
+*.af~lock~
