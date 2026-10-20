@@ -14,7 +14,7 @@ Open the Local URL printed by Vite. This only runs while the process and Mac are
 
 ## Permanent hosting
 
-Vercel builds and publishes `main` at [sarakim23.vercel.app](https://sarakim23.vercel.app/). The former GitHub Pages address at `saykig.github.io/sara-poet/` redirects readers here; its workflow publishes only the redirect page. The book runs independently of Sara's Mac.
+Vercel builds and publishes `main` at [sarakim23.vercel.app](https://sarakim23.vercel.app/). The former address at `saykig.github.io/sara-poet/` redirects readers here from the public personal-site repository. This poetry source repository remains private. The book runs independently of Sara's Mac.
 
 ## Poems
 
