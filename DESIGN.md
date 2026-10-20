@@ -14,3 +14,6 @@ Central binding shadows and page edges establish depth. One signature motion: us
 - I Wandered Through the Sea retains its boat and waves with a distinct transparent silhouette, without a gradient fade.
 - I miss remains text-only pending a new individual painting. Preserve all source words, line breaks and intentional italics; headings occur once.
 - New cutouts were edited with built-in image generation from the existing paintings, saved in public/art with versioned names.
+
+### Proportion and page-edge correction
+Artwork must preserve its intrinsic aspect ratio. Polaroids uses a narrower continuous panorama with automatic height; Sea now uses separate sunset and boat/waves vignettes. New versions soften the harsh etched texture toward painted gouache. Artwork touching the bottom runs through the trim, without a faded border. All three new images were generated individually with the built-in image tool; previous versions remain archived and are not displayed.

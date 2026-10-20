@@ -46,3 +46,20 @@
 .pattern-piece.night{background-size:100% 275%}
 .pattern-piece.lake{clip-path:inset(22% 0 8% 0)}
 .page[data-poem-id="i-wandered-through-the-sea"] .woven-art{background-size:200% 100%}
+
+/* Artwork always keeps its intrinsic proportions. */
+.polaroid-panorama{top:34%;height:38%;background-image:url('../public/art/polaroids-panorama-v3.png');background-size:200% auto}
+.panorama-left{left:25%;right:0}.panorama-right{left:0;right:25%}
+.polaroid-bottom{top:74%;font-size:3.1cqw;line-height:1.3}
+.sea-composition>h2{position:absolute;top:6%;left:10%;margin:0;font:400 4.5cqw "Old Standard TT",Georgia,serif}
+.sea-opening{top:17%}.sea-after-sunset{top:65%}.sea-second{top:10%;font-size:3.6cqw;line-height:1.5}
+.sunset-vignette{position:absolute;left:18%;width:64%;top:38%;height:24%;object-fit:contain}
+.sea-vignette{position:absolute;left:0;width:100%;bottom:4%;height:37%;object-fit:contain}
+.polaroid-panorama{top:32%;height:37%}
+.polaroid-bottom{top:70%}
+/* Edge artwork meets the paper trim; interior vignettes retain their silhouette. */
+.sea-vignette{bottom:0;object-position:center bottom}
+.pattern-piece.hill{bottom:0}
+.polaroid-composition:has(.panorama-right) .polaroid-top{top:10%}
+.sea-vignette{bottom:-2%}
+.pattern-piece.hill{bottom:-1%}

@@ -90,6 +90,14 @@ function composedLeaves(poem) {
     const html = stanzaHTML(stanza, offset); offset += stanza.length; return html;
   });
   const block = (from, to, cls) => `<div class="composition-text ${cls}">${stanzas.slice(from,to).join('')}</div>`;
+  if (poem.id === 'i-wandered-through-the-sea') {
+    return [
+      leaf('poem-page sea-composition', `<h2>${escape(poem.title)}</h2>${block(0,1,'sea-opening')}<img class="sunset-vignette" src="${asset('sea-sunset-v1.png')}" alt="A softly painted apricot sunset over quiet water.">${block(1,2,'sea-after-sunset')}`, poem.id),
+      leaf('poem-page sea-composition', `${block(2,4,'sea-second')}<img class="sea-vignette" src="${asset('sea-cutout-v2.png')}" alt="A small sailboat riding blue waves with ivory crests.">`, poem.id),
+      leaf('poem-page', `<div class="poem-flow">${stanzas.slice(4,6).join('')}</div>`, poem.id),
+      leaf('poem-page', `<div class="poem-flow">${stanzas.slice(6).join('')}</div>`, poem.id),
+    ];
+  }
   if (poem.id === 'patterns-against-distance') {
     const piece = kind => `<div class="pattern-piece ${kind}" aria-hidden="true"></div>`;
     return [
@@ -127,9 +135,9 @@ function renderBook() {
       pages.push(...exported);
       continue;
     }
-    const poemPages = ['polaroids', 'patterns-against-distance'].includes(poem.id) ? composedLeaves(poem) : paginate(poem, width, height);
+    const poemPages = ['polaroids', 'patterns-against-distance', 'i-wandered-through-the-sea'].includes(poem.id) ? composedLeaves(poem) : paginate(poem, width, height);
     pages.push(...poemPages);
-    if (art[poem.id] && !['polaroids', 'patterns-against-distance'].includes(poem.id)) {
+    if (art[poem.id] && !['polaroids', 'patterns-against-distance', 'i-wandered-through-the-sea'].includes(poem.id)) {
       const [file] = art[poem.id];
       poemPages.slice(0,2).forEach((page, i) => {
         const globalIndex = starts.at(-1) + i;
