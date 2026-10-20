@@ -1,6 +1,6 @@
 # Selected Poems · Sara Kim
 
-An illustrated, draggable poetry book with ten poems imported from [Sara's poetry page](https://sarakim23.vercel.app/writing/poetry). Built with Vite, vanilla JavaScript, and the MIT-licensed [StPageFlip](https://github.com/Nodlik/StPageFlip). Cover: Times New Roman. Interior: locally bundled IM Fell English (SIL Open Font License).
+An illustrated, draggable poetry book at [sarakim23.vercel.app](https://sarakim23.vercel.app/) with ten poems imported from Sara's former personal-site poetry page. Built with Vite, vanilla JavaScript, and the MIT-licensed [StPageFlip](https://github.com/Nodlik/StPageFlip). Cover: Times New Roman. Interior: locally bundled IM Fell English (SIL Open Font License).
 
 ## Run on your Mac
 
@@ -14,15 +14,11 @@ Open the Local URL printed by Vite. This only runs while the process and Mac are
 
 ## Permanent hosting
 
-GitHub Pages publishes `dist/` using `.github/workflows/pages.yml` whenever `main` is pushed. The static site runs independently of Sara's Mac and does not require Vercel or a server database. The relative Vite base supports both a repository subpath and a custom domain.
+Vercel builds and publishes `main` at [sarakim23.vercel.app](https://sarakim23.vercel.app/). The former GitHub Pages address at `saykig.github.io/sara-poet/` redirects readers here; its workflow publishes only the redirect page. The book runs independently of Sara's Mac.
 
 ## Poems
 
-`content/poems.json` contains the complete source text, original line breaks, stanza boundaries, italic flags, indentation, and source URLs. Imported 2026-10-19: 10 poems, 248 lines. The importer does not rewrite or correct text. To deliberately refresh from the published source:
-
-```sh
-python3 scripts/import-poems.py
-```
+`content/poems.json` contains the complete source text, original line breaks, stanza boundaries, italic flags, indentation, and historical source URLs. Imported 2026-10-19: 10 poems, 248 lines. The importer does not rewrite or correct text. The original poetry route is now retired; edit this file directly when adding or revising poems. `scripts/import-poems.py` is retained for provenance but its old source URL is no longer live.
 
 Review the content diff before committing. Pagination measures the actual typeset content for each viewport, preserves whole stanzas when possible, and splits an oversized stanza only between its original lines. Contents page numbers update when pagination changes. Reading view uses the same data.
 
