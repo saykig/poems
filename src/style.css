@@ -4,3 +4,25 @@
 @media(prefers-reduced-motion:reduce){.book-position{transition:none}}
 
 .exported-art{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}.exported-page .page-number{display:none}
+
+/* Existing illustrations share the typeset leaves; the mask fades into paper. */
+.poem-flow h2,.reading-poem h2{font-style:normal;letter-spacing:.045em;font-variant-caps:small-caps}
+.short-poem .poem-flow{font-size:4.2cqw;line-height:1.55}
+.illustrated-poem .poem-flow{bottom:34%;z-index:1}
+.woven-art{position:absolute;inset:auto 0 0;height:34%;background-size:cover;background-position:center 65%;background-repeat:no-repeat;mix-blend-mode:multiply;mask-image:linear-gradient(to bottom,transparent 0%,#000 38%);pointer-events:none}
+.illustration-paired .woven-art{background-size:200% auto}
+.illustration-paired.illustration-left .woven-art{background-position:left 65%}
+.illustration-paired.illustration-right .woven-art{background-position:right 65%}
+.illustrated-poem .page-number{bottom:2%;color:#fff9e9;text-shadow:0 1px 3px #25271d}
+@media(max-width:700px){.short-poem .poem-flow{font-size:4.4cqw}.illustrated-poem .poem-flow{bottom:34%}}
+
+@font-face{font-family:"Old Standard TT";src:url("../design/stars-pilot/fonts/OldStandard-Regular.ttf") format("truetype");font-weight:400;font-style:normal;font-display:swap}
+.poem-flow,.reading-poem{font-family:"Old Standard TT",Georgia,serif}.poem-flow .italic,.reading-poem .italic{font-family:"IM Fell English",Georgia,serif}
+
+.polaroid-flow{position:absolute;inset:8% 10% 7%;font-family:"Old Standard TT",Georgia,serif;font-size:3.35cqw;line-height:1.35}
+.polaroid-flow h2{font-size:4.5cqw;font-weight:400;font-style:normal;text-transform:none;letter-spacing:.045em;margin:0 0 1.2em}
+.polaroid-flow .stanza{margin-bottom:.8em}.polaroid-flow .italic{font-family:"IM Fell English",Georgia,serif}
+.polaroid-cutout{display:block;width:82%;height:25cqw;object-fit:contain;margin:.6em auto .9em}
+.polaroid-ending .polaroid-flow{top:16%;font-size:3.8cqw;line-height:1.5}
+.polaroid-ending .stanza{margin-bottom:1.4em}
+.page[data-poem-id="patterns-against-distance"] .poem-flow{font-size:3.3cqw;line-height:1.35}

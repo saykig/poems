@@ -10,10 +10,7 @@ const asset = name => `${import.meta.env.BASE_URL}art/${name}`;
 const art = {
   'patterns-against-distance': ['stars.png', 'A solitary figure beneath three bright stars above a dark lake.'],
   'polaroids': ['polaroids.png', 'Instant photographs of home and friends hanging above a desk in the evening light.'],
-  'i-miss': ['i-miss.jpeg', 'Clouds over a quiet intersection at sunset.'],
-  'the-stars-do-not-know': ['stars.png', 'The vast night sky above a small figure on a hill.'],
   'i-wandered-through-the-sea': ['sea.png', 'A tiny sailboat among moonlit waves beneath a crescent moon.'],
-  'the-space-between-us': ['the-space-between-us-moon.png', 'A crescent moon over a waterfront at dusk.'],
 };
 const escape = text => text.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function lineHTML(line, index) {
@@ -40,13 +37,14 @@ let flip, pages = [], book, previousWidth = 0;
 // Measure actual typeset stanzas at this viewport; move whole stanzas where possible.
 // If a stanza cannot fit on an empty leaf, split only between original lines.
 function paginate(poem, width, height) {
-  const probe = leaf('poem-page measuring', '<div class="poem-flow"></div>', poem.id);
+  const pageClass = `poem-page${art[poem.id] ? ' illustrated-poem' : ''}${poem.stanzas.flat().length <= 12 ? ' short-poem' : ''}`;
+  const probe = leaf(`${pageClass} measuring`, '<div class="poem-flow"></div>', poem.id);
   Object.assign(probe.style, {width:`${width}px`,height:`${height}px`});
   document.body.append(probe);
   const flow = probe.querySelector('.poem-flow');
   const chunks = [];
   let offset = 0;
-  const heading = () => `<h2>${escape(poem.title)}</h2>${chunks.length ? '<span class="continuation">continued</span>' : ''}`;
+  const heading = () => chunks.length ? '' : `<h2>${escape(poem.title)}</h2>`;
   flow.innerHTML = heading();
   const fits = () => flow.scrollHeight <= flow.clientHeight + 1;
   const save = () => { chunks.push(flow.innerHTML); flow.innerHTML = heading(); };
@@ -77,12 +75,7 @@ function paginate(poem, width, height) {
   }
   if (flow.querySelector('.stanza')) chunks.push(flow.innerHTML);
   probe.remove();
-  return chunks.map(html => leaf('poem-page', `<div class="poem-flow">${html}</div>`, poem.id));
-}
-function artLeaf(poem, spreadSide) {
-  const [file, alt] = art[poem.id];
-  if (spreadSide) return leaf(`art-page panorama ${spreadSide}`, `<div class="panorama-art" style="background-image:url('${asset(file)}')" role="img" aria-label="${escape(alt)}"></div>`, poem.id);
-  return leaf('art-page', `<img class="poem-art ${poem.sourceImage ? 'source-photo' : ''}" src="${asset(file)}" alt="${escape(alt)}" draggable="false">`, poem.id);
+  return chunks.map(html => leaf(pageClass, `<div class="poem-flow">${html}</div>`, poem.id));
 }
 // Exported designs are full page compositions; live text remains in Reading view.
 function exportedLeaves(poem) {
@@ -90,6 +83,18 @@ function exportedLeaves(poem) {
   if (!spread) return null;
   return spread.pages.map((page, index) => leaf('exported-page',
     `<img class="exported-art" src="${import.meta.env.BASE_URL}spreads/${escape(page.file)}" alt="${escape(page.description)}" draggable="false"><span class="sr-only">${escape(poem.title)}, illustrated page ${index + 1}. Complete poem available in Reading view.</span>`, poem.id));
+}
+function polaroidLeaves(poem) {
+  let offset = 0;
+  const stanzas = poem.stanzas.map(stanza => {
+    const html = stanzaHTML(stanza, offset);
+    offset += stanza.length;
+    return html;
+  });
+  return [
+    leaf('poem-page polaroid-composition', `<div class="polaroid-flow"><h2>${escape(poem.title)}</h2>${stanzas.slice(0,2).join('')}<img class="polaroid-cutout" src="${asset('polaroids-cutout-v1.png')}" alt="Three painted instant photographs of a garden, a lit window and the sea, hanging from a fine string." draggable="false">${stanzas.slice(2,5).join('')}</div>`, poem.id),
+    leaf('poem-page polaroid-composition polaroid-ending', `<div class="polaroid-flow">${stanzas.slice(5).join('')}</div>`, poem.id),
+  ];
 }
 function renderBook() {
   const width = stage.clientWidth / (matchMedia('(max-width:700px)').matches ? 1 : 2);
@@ -115,17 +120,18 @@ function renderBook() {
       pages.push(...exported);
       continue;
     }
-    const poemPages = paginate(poem, width, height);
+    const poemPages = poem.id === 'polaroids' ? polaroidLeaves(poem) : paginate(poem, width, height);
     pages.push(...poemPages);
-    if (poemPages.length % 2) {
-      pages.push(art[poem.id] ? artLeaf(poem) : leaf('quiet-page', ornament, poem.id));
-    }
-    // A dedicated continuous seascape follows the poem that actually describes it.
-    if (poem.id === 'i-wandered-through-the-sea') {
-      pages.push(artLeaf(poem, 'panorama-left'), artLeaf(poem, 'panorama-right'));
-    } else if (poemPages.length % 2 === 0 && art[poem.id]) {
-      // Keep illustrations with their poem, on their own paired leaves.
-      pages.push(leaf('art-title', `<h2>${escape(poem.title)}</h2>${ornament}`, poem.id), artLeaf(poem));
+    if (art[poem.id] && poem.id !== 'polaroids') {
+      const [file] = art[poem.id];
+      poemPages.slice(0,2).forEach((page, i) => {
+        const globalIndex = starts.at(-1) + i;
+        const left = globalIndex % 2 === 1;
+        const paired = left ? i + 1 < poemPages.length : i > 0;
+        page.classList.add(left ? 'illustration-left' : 'illustration-right');
+        if (paired) page.classList.add('illustration-paired');
+        page.insertAdjacentHTML('afterbegin', `<div class="woven-art" aria-hidden="true" style="background-image:url('${asset(file)}')"></div>`);
+      });
     }
   }
   pages.push(leaf('cover back-cover', `<div class="cover-frame">${ornament}<p class="cover-author">SARA KIM</p></div>`));
