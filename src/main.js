@@ -5,6 +5,7 @@ import poems from '../content/poems.json';
 import '@fontsource/cormorant-garamond/400.css';
 import './style.css';
 
+const coverStars = () => Array.from({length:22}, () => `<span class="cover-spark" aria-hidden="true" style="left:${5+Math.random()*90}%;top:${4+Math.random()*92}%;--duration:${4+Math.random()*5}s;--delay:${-Math.random()*9}s"></span>`).join('');
 const ornament = '<span class="ornament" aria-hidden="true">❦</span>';
 const escape = text => text.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function lineHTML(line, index) {
@@ -83,7 +84,7 @@ function renderBook() {
   position.innerHTML = '<div id="book" tabindex="0" role="group" aria-label="Poetry book. Drag a corner or use the left and right arrow keys to turn pages."></div>';
   book = position.querySelector('#book');
   pages = [
-    leaf('cover', `<div class="cover-frame"><h2>SELECTED<br>POEMS</h2><p class="cover-author">SARA KIM</p></div>`),
+    leaf('cover', `${coverStars()}<div class="cover-frame"><h2>SELECTED<br>POEMS</h2><p class="cover-author">SARA KIM</p></div>`),
     leaf('bookplate', `<div class="dedication"><p>To you</p></div>`),
     leaf('contents-page', '<div class="contents-inner"><h2>Contents</h2><nav class="toc" aria-label="Poems"></nav></div>'),
   ];
@@ -161,3 +162,14 @@ new ResizeObserver(() => {
   clearTimeout(resizeTimer);
   if (!document.querySelector('#experience').hidden) resizeTimer = setTimeout(renderBook, 180);
 }).observe(stage);
+
+let lastDust = 0;
+document.querySelector('#experience').addEventListener('pointermove', event => {
+  if (event.pointerType !== 'mouse' || reducedMotion.matches || performance.now()-lastDust < 45) return;
+  lastDust = performance.now();
+  const dust = document.createElement('span');
+  dust.className = 'star-dust'; dust.setAttribute('aria-hidden','true');
+  dust.style.cssText = `left:${event.clientX}px;top:${event.clientY}px;--dx:${Math.random()*16-8}px`;
+  document.body.append(dust);
+  dust.addEventListener('animationend', () => dust.remove(), {once:true});
+});
