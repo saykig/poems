@@ -110,3 +110,29 @@
   0%, 100% { opacity: .62; }
   50% { opacity: 1; }
 }
+
+.pattern-alignment .pattern-painted-light {
+  fill: #fff2c4;
+  opacity: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pattern-spread[aria-hidden="false"] .alignment-star,
+  .pattern-spread[aria-hidden="false"] .pattern-painted-light {
+    animation: pattern-star-flicker var(--period) var(--phase) ease-in-out infinite;
+  }
+}
+@keyframes pattern-star-flicker {
+  0%, 25%, 53%, 84%, 100% {
+    opacity: var(--star-rest, .5);
+    filter: drop-shadow(0 0 1px #ffd58855);
+  }
+  13%, 68% {
+    opacity: 1;
+    filter: drop-shadow(0 0 4px #ffd588);
+  }
+  42% {
+    opacity: .78;
+    filter: drop-shadow(0 0 2px #ffd588aa);
+  }
+}
+.pattern-alignment .pattern-painted-light { --star-rest: 0; }
