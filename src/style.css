@@ -80,3 +80,7 @@
 :root .page.pattern-spread-right{background-position:center,right top!important}
 .pattern-spread .poem-flow{position:absolute;z-index:1;text-shadow:0 1px 2px #031627,0 0 7px #031627a8}
 .pattern-spread .page-number{color:#fff3da;text-shadow:0 1px 3px #071b2c,0 0 5px #071b2c}
+
+/* Give both halves of the short poem comfortable, balanced typesetting. */
+.pattern-spread .poem-flow{font-size:max(12px,3cqw);line-height:1.45}
+.pattern-spread .poem-flow h2{font-size:max(20px,4.5cqw)}

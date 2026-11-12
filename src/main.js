@@ -49,6 +49,18 @@ themeToggle.addEventListener('click', () => setPageTheme(themeToggle.getAttribut
 // If a stanza cannot fit on an empty leaf, split only between original lines.
 function paginate(poem, width, height) {
   const pageClass = 'poem-page';
+  if (poem.id === 'patterns-against-distance') {
+    let offset = 0;
+    const makePage = (stanzas, titled) => {
+      const verse = stanzas.map(stanza => {
+        const html = stanzaHTML(stanza, offset);
+        offset += stanza.length;
+        return html;
+      }).join('');
+      return leaf(pageClass, `<div class="poem-flow">${titled ? `<h2>${escape(poem.title)}</h2>` : ''}${verse}</div>`, poem.id);
+    };
+    return [makePage(poem.stanzas.slice(0, 4), true), makePage(poem.stanzas.slice(4), false)];
+  }
   const probe = leaf(`${pageClass} measuring`, '<div class="poem-flow"></div>', poem.id);
   Object.assign(probe.style, {width:`${width}px`,height:`${height}px`});
   document.body.append(probe);
