@@ -98,9 +98,8 @@
   fill: none;
   stroke: currentColor;
   stroke-opacity: .63;
-  stroke-width: 1;
-  vector-effect: non-scaling-stroke;
-  stroke-dasharray: 1;
+  stroke-width: .6;
+  stroke-dasharray: 1 1;
   stroke-dashoffset: 0;
 }
 .pattern-alignment .alignment-light {
