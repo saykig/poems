@@ -5,4 +5,4 @@ Seven poems are selected from the ten imported verbatim from https://sarakim23.v
 
 Confirmed cover: SELECTED POEMS, Times New Roman style, retained fleuron, SARA KIM at bottom, no images or extra subtitle. Book is the large centerpiece; no footer, opening slogan or open-book button. Only the drag hint belongs beneath the book. Interior poem pages contain text only; earlier artwork is archived outside the published site.
 
-Sara requested a permanent link independent of her Mac. Vercel publishes pushes to `main` at [sarapoet.vercel.app](https://sarapoet.vercel.app/). No new branch is needed for routine changes.
+Sara requested a permanent link independent of her Mac. Vercel publishes pushes to `main` at [sarapoems.vercel.app](https://sarapoems.vercel.app/). No new branch is needed for routine changes.

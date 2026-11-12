@@ -1,6 +1,6 @@
 # Selected Poems · Sara Kim
 
-A draggable poetry book at [sarapoet.vercel.app](https://sarapoet.vercel.app/) with seven poems selected from Sara's former personal-site poetry page. Built with Vite, vanilla JavaScript, and the MIT-licensed [StPageFlip](https://github.com/Nodlik/StPageFlip). Cover: Times New Roman. Interior: locally bundled Old Standard TT and IM Fell English (SIL Open Font License).
+A draggable poetry book at [sarapoems.vercel.app](https://sarapoems.vercel.app/) with seven poems selected from Sara's former personal-site poetry page. Built with Vite, vanilla JavaScript, and the MIT-licensed [StPageFlip](https://github.com/Nodlik/StPageFlip). Cover: Times New Roman. Interior: locally bundled Old Standard TT and IM Fell English (SIL Open Font License).
 
 ## Run on your Mac
 
@@ -14,7 +14,7 @@ Open the Local URL printed by Vite. This only runs while the process and Mac are
 
 ## Permanent hosting
 
-Vercel builds and publishes `main` at [sarapoet.vercel.app](https://sarapoet.vercel.app/). The former Vercel address `sarakim23.vercel.app` and GitHub Pages path `saykig.github.io/sara-poet/` redirect readers here. This poetry source repository remains private. The book runs independently of Sara's Mac.
+Vercel builds and publishes `main` at [sarapoems.vercel.app](https://sarapoems.vercel.app/). The former Vercel address `sarakim23.vercel.app` and GitHub Pages path `saykig.github.io/sara-poet/` redirect readers here. This poetry source repository remains private. The book runs independently of Sara's Mac.
 
 ## Poems
 
