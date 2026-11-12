@@ -1,4 +1,6 @@
-# Illustrated page exports
+# Illustrated page exports (archived)
+
+These pilot instructions are retained for provenance. The current book does not render illustrated pages, and these files are outside the published site.
 
 Pilot: The stars do not know (nine lines). Author a two-page spread with text and artwork sharing both pages. Preserve all original words, stanza breaks and italics from content/poems.json.
 

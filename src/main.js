@@ -2,16 +2,9 @@ import { PageFlip } from 'page-flip';
 import '@fontsource/im-fell-english/400.css';
 import '@fontsource/im-fell-english/400-italic.css';
 import poems from '../content/poems.json';
-import illustratedSpreads from '../content/illustrated-spreads.json';
 import './style.css';
 
 const ornament = '<span class="ornament" aria-hidden="true">❦</span>';
-const asset = name => `${import.meta.env.BASE_URL}art/${name}`;
-const art = {
-  'patterns-against-distance': ['stars.png', 'A solitary figure beneath three bright stars above a dark lake.'],
-  'polaroids': ['polaroids.png', 'Instant photographs of home and friends hanging above a desk in the evening light.'],
-  'i-wandered-through-the-sea': ['sea-cutout-v1.png', 'A tiny sailboat among moonlit waves beneath a crescent moon.'],
-};
 const escape = text => text.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function lineHTML(line, index) {
   return `<span class="poem-line${line.italic ? ' italic' : ''}" style="--indent:${line.indent}" data-line="${index}">${escape(line.text)}</span>`;
@@ -37,7 +30,7 @@ let flip, pages = [], book, previousWidth = 0;
 // Measure actual typeset stanzas at this viewport; move whole stanzas where possible.
 // If a stanza cannot fit on an empty leaf, split only between original lines.
 function paginate(poem, width, height) {
-  const pageClass = `poem-page${art[poem.id] ? ' illustrated-poem' : ''}${poem.stanzas.flat().length <= 12 ? ' short-poem' : ''}`;
+  const pageClass = 'poem-page';
   const probe = leaf(`${pageClass} measuring`, '<div class="poem-flow"></div>', poem.id);
   Object.assign(probe.style, {width:`${width}px`,height:`${height}px`});
   document.body.append(probe);
@@ -77,40 +70,6 @@ function paginate(poem, width, height) {
   probe.remove();
   return chunks.map(html => leaf(pageClass, `<div class="poem-flow">${html}</div>`, poem.id));
 }
-// Exported designs are full page compositions; live text remains in Reading view.
-function exportedLeaves(poem) {
-  const spread = illustratedSpreads[poem.id];
-  if (!spread) return null;
-  return spread.pages.map((page, index) => leaf('exported-page',
-    `<img class="exported-art" src="${import.meta.env.BASE_URL}spreads/${escape(page.file)}" alt="${escape(page.description)}" draggable="false"><span class="sr-only">${escape(poem.title)}, illustrated page ${index + 1}. Complete poem available in Reading view.</span>`, poem.id));
-}
-function composedLeaves(poem) {
-  let offset = 0;
-  const stanzas = poem.stanzas.map(stanza => {
-    const html = stanzaHTML(stanza, offset); offset += stanza.length; return html;
-  });
-  const block = (from, to, cls) => `<div class="composition-text ${cls}">${stanzas.slice(from,to).join('')}</div>`;
-  if (poem.id === 'i-wandered-through-the-sea') {
-    return [
-      leaf('poem-page sea-composition', `<h2>${escape(poem.title)}</h2>${block(0,1,'sea-opening')}<img class="sunset-vignette" src="${asset('sea-sunset-v1.png')}" alt="A softly painted apricot sunset over quiet water.">${block(1,2,'sea-after-sunset')}`, poem.id),
-      leaf('poem-page sea-composition', `${block(2,4,'sea-second')}<img class="sea-vignette" src="${asset('sea-cutout-v2.png')}" alt="A small sailboat riding blue waves with ivory crests.">`, poem.id),
-      leaf('poem-page', `<div class="poem-flow">${stanzas.slice(4,6).join('')}</div>`, poem.id),
-      leaf('poem-page', `<div class="poem-flow">${stanzas.slice(6).join('')}</div>`, poem.id),
-    ];
-  }
-  if (poem.id === 'patterns-against-distance') {
-    const piece = kind => `<div class="pattern-piece ${kind}" aria-hidden="true"></div>`;
-    return [
-      leaf('poem-page pattern-composition', `<h2>${escape(poem.title)}</h2>${piece('night')}${block(0,4,'pattern-first')}${piece('hill')}`, poem.id),
-      leaf('poem-page pattern-composition', `${block(4,7,'pattern-second-top')}${piece('lake')}${block(7,10,'pattern-second-bottom')}`, poem.id),
-    ];
-  }
-  const painting = side => `<div class="polaroid-panorama ${side}" role="img" aria-label="A continuous painted string of memories, tied between ivy and lavender, with a sunlit window and writing desk."></div>`;
-  return [
-    leaf('poem-page polaroid-composition', `<h2>${escape(poem.title)}</h2>${block(0,2,'polaroid-top')}${painting('panorama-left')}${block(2,5,'polaroid-bottom')}`, poem.id),
-    leaf('poem-page polaroid-composition', `${block(5,8,'polaroid-top')}${painting('panorama-right')}${block(8,10,'polaroid-bottom')}`, poem.id),
-  ];
-}
 function renderBook() {
   const width = stage.clientWidth / (matchMedia('(max-width:700px)').matches ? 1 : 2);
   if (Math.abs(previousWidth - width) < 1 && flip) return;
@@ -130,24 +89,7 @@ function renderBook() {
   const starts = [];
   for (const poem of poems) {
     starts.push(pages.length);
-    const exported = exportedLeaves(poem);
-    if (exported) {
-      pages.push(...exported);
-      continue;
-    }
-    const poemPages = ['polaroids', 'patterns-against-distance', 'i-wandered-through-the-sea'].includes(poem.id) ? composedLeaves(poem) : paginate(poem, width, height);
-    pages.push(...poemPages);
-    if (art[poem.id] && !['polaroids', 'patterns-against-distance', 'i-wandered-through-the-sea'].includes(poem.id)) {
-      const [file] = art[poem.id];
-      poemPages.slice(0,2).forEach((page, i) => {
-        const globalIndex = starts.at(-1) + i;
-        const left = globalIndex % 2 === 1;
-        const paired = left ? i + 1 < poemPages.length : i > 0;
-        page.classList.add(left ? 'illustration-left' : 'illustration-right');
-        if (paired) page.classList.add('illustration-paired');
-        page.insertAdjacentHTML('afterbegin', `<div class="woven-art" aria-hidden="true" style="background-image:url('${asset(file)}')"></div>`);
-      });
-    }
+    pages.push(...paginate(poem, width, height));
   }
   pages.push(leaf('cover back-cover', `<div class="cover-frame">${ornament}<p class="cover-author">SARA KIM</p></div>`));
   pages[2].querySelector('.toc').innerHTML = poems.map((poem, i) => `<button data-page="${starts[i]}"><span>${escape(poem.title)}</span><span>${starts[i]}</span></button>`).join('');

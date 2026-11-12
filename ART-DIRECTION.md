@@ -1,6 +1,6 @@
 # Storybook sourcing and composition
 
-Sara's reference direction, 19 October 2026. Research recommendations, not yet implemented.
+Sara's former reference direction, 19 October 2026. Archived research; the current book contains no illustrations.
 
 ## Fixed requirements
 

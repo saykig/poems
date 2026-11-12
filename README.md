@@ -1,6 +1,6 @@
 # Selected Poems · Sara Kim
 
-An illustrated, draggable poetry book at [sarapoet.vercel.app](https://sarapoet.vercel.app/) with seven poems selected from Sara's former personal-site poetry page. Built with Vite, vanilla JavaScript, and the MIT-licensed [StPageFlip](https://github.com/Nodlik/StPageFlip). Cover: Times New Roman. Interior: locally bundled IM Fell English (SIL Open Font License).
+A draggable poetry book at [sarapoet.vercel.app](https://sarapoet.vercel.app/) with seven poems selected from Sara's former personal-site poetry page. Built with Vite, vanilla JavaScript, and the MIT-licensed [StPageFlip](https://github.com/Nodlik/StPageFlip). Cover: Times New Roman. Interior: locally bundled Old Standard TT and IM Fell English (SIL Open Font License).
 
 ## Run on your Mac
 
@@ -24,7 +24,9 @@ Review the content diff before committing. Pagination measures the actual typese
 
 Drag corners using mouse/touch; Left/Right arrow keys also turn pages. Home returns to the cover. Contents jumps to each poem. There are no opening slogans, page-turn buttons, or site footer.
 
-## Artwork provenance
+## Archived artwork
+
+The book no longer displays illustrations. Earlier image assets and the illustrated-spread pilot instructions are stored under `design/archive-art/`, outside the published site. The original artwork provenance is retained below for reference.
 
 `stars.png`, `polaroids.png`, and `sea.png` are original concept illustrations generated with the built-in image-generation tool on 2026-10-19. Their subjects follow the poems: cosmic alignment, memories in photographs, and a tiny boat in moonlit seas. They are interpretations, not claims about actual places or people. Final prompt briefs:
 
@@ -32,6 +34,6 @@ Drag corners using mouse/touch; Left/Right arrow keys also turn pages. Home retu
 - **Polaroids:** Fine ink, textured colored pencil and dry gouache; white-bordered photographs of home, friends and sunset on twine above a desk, lavender and late afternoon light, no writing.
 - **Sea:** Continuous 3:2 illustrated spread; tiny sailboat in blue-grey waves, crescent moon, silver wave crests and the last sunset at the horizon, pencil hatching and dry gouache.
 
-`i-miss.jpeg` and `the-space-between-us-moon.png` are copied from the images already associated with those poems on Sara's source site. Their original descriptions are preserved. `garden.png` and `woodland.png` remain unused explorations from the first draft.
+`i-miss.jpeg` and `the-space-between-us-moon.png` are copied from the images already associated with those poems on Sara's source site. `garden.png` and `woodland.png` were unused explorations from the first draft.
 
 Initial draft checkpoint: `b8db0fb` (committed and pushed before these revisions).
