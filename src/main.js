@@ -2,7 +2,7 @@ import { PageFlip } from 'page-flip';
 import '@fontsource/im-fell-english/400.css';
 import '@fontsource/im-fell-english/400-italic.css';
 import poems from '../content/poems.json';
-import '@fontsource/cormorant-garamond/600.css';
+import '@fontsource/cormorant-garamond/400.css';
 import './style.css';
 
 const ornament = '<span class="ornament" aria-hidden="true">❦</span>';
@@ -84,7 +84,7 @@ function renderBook() {
   book = position.querySelector('#book');
   pages = [
     leaf('cover', `<div class="cover-frame"><h2>SELECTED<br>POEMS</h2><p class="cover-author">SARA KIM</p></div>`),
-    leaf('bookplate', `<div class="bookplate-inner">${ornament}<p>Selected Poems</p><h2>Sara Kim</h2></div>`),
+    leaf('bookplate', `<div class="dedication"><p>To you</p></div>`),
     leaf('contents-page', '<div class="contents-inner"><h2>Contents</h2><nav class="toc" aria-label="Poems"></nav></div>'),
   ];
   const starts = [];
