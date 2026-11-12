@@ -11,6 +11,9 @@ const escape = text => text.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>
 function lineHTML(line, index) {
   return `<span class="poem-line${line.italic ? ' italic' : ''}" style="--indent:${line.indent}" data-line="${index}">${escape(line.text)}</span>`;
 }
+function dateHTML(poem) {
+  return poem.date ? `<p class="poem-date">${escape(poem.date)}</p>` : '';
+}
 function stanzaHTML(stanza, offset = 0) {
   return `<p class="stanza">${stanza.map((line, i) => lineHTML(line, offset + i)).join('')}</p>`;
 }
@@ -80,7 +83,30 @@ function paginate(poem, width, height) {
     }
     offset += stanza.length;
   }
-  if (flow.querySelector('.stanza')) chunks.push(flow.innerHTML);
+  if (poem.date) {
+    const date = document.createElement('p');
+    date.className = 'poem-date';
+    date.textContent = poem.date;
+    flow.append(date);
+    if (!fits()) {
+      date.remove();
+      const lastStanza = flow.querySelector('.stanza:last-of-type');
+      if (lastStanza) {
+        lastStanza.remove();
+        save();
+        flow.append(lastStanza, date);
+      } else {
+        save();
+        flow.append(date);
+      }
+      if (!fits()) {
+        date.remove();
+        save();
+        flow.append(date);
+      }
+    }
+  }
+  if (flow.querySelector('.stanza') || flow.querySelector('.poem-date')) chunks.push(flow.innerHTML);
   probe.remove();
   return chunks.map(html => leaf(pageClass, `<div class="poem-flow">${html}</div>`, poem.id));
 }
@@ -149,7 +175,7 @@ function turn(direction) {
   if (direction < 0 && index > 0) reducedMotion.matches ? flip.turnToPrevPage() : flip.flipPrev();
 }
 const readingView = document.querySelector('#reading-view');
-readingView.innerHTML = `<h2 class="reading-title">Selected Poems</h2><p class="byline">Sara Kim</p><nav class="reading-toc" aria-label="Poems">${poems.map(p => `<a href="#read-${p.id}">${escape(p.title)}</a>`).join('')}</nav>${poems.map(p => `<article id="read-${p.id}" class="reading-poem" data-poem-id="${p.id}"><h2>${escape(p.title)}</h2>${p.stanzas.map(stanza => stanzaHTML(stanza)).join('')}</article>`).join('')}`;
+readingView.innerHTML = `<h2 class="reading-title">Selected Poems</h2><p class="byline">Sara Kim</p><nav class="reading-toc" aria-label="Poems">${poems.map(p => `<a href="#read-${p.id}">${escape(p.title)}</a>`).join('')}</nav>${poems.map(p => `<article id="read-${p.id}" class="reading-poem" data-poem-id="${p.id}"><h2>${escape(p.title)}</h2>${p.stanzas.map(stanza => stanzaHTML(stanza)).join('')}${dateHTML(p)}</article>`).join('')}`;
 function setReading(reading) {
   readingView.hidden = !reading;
   document.querySelector('#experience').hidden = reading;
