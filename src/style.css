@@ -47,5 +47,5 @@
 .cover{border-color:transparent}
 
 /* A date belongs after the poem, with room to breathe on both layouts. */
-.poem-date{margin:2.2em 0 0;font-size:.78em;font-style:italic;line-height:1.35}
-.reading-poem .poem-date{margin-top:2.4em}
+.poem-date{margin:3.6em 0 0;font-family:'IM Fell English',Georgia,serif;font-size:.78em;font-style:italic;line-height:1.35}
+.reading-poem .poem-date{margin-top:3.6em}
