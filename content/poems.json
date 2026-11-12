@@ -847,5 +847,406 @@
       "src": "/images/poetry/the-space-between-us-moon.png",
       "alt": "A crescent moon over a waterfront at dusk."
     }
+  },
+  {
+    "id": "blue-bird",
+    "title": "blue bird",
+    "stanzas": [
+      [
+        {
+          "text": "i walk a lonely path in autumn's chill",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "as my heart weeps in despair",
+          "italic": false,
+          "indent": 0
+        }
+      ],
+      [
+        {
+          "text": "i look for his collar amongst the flock",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "but he is nowhere there.",
+          "italic": false,
+          "indent": 0
+        }
+      ],
+      [
+        {
+          "text": "where has my best friend gone?",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "have you seen him,",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "is he there?",
+          "italic": false,
+          "indent": 0
+        }
+      ],
+      [
+        {
+          "text": "he is but a little ear of sweet corn,",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "his cheeks as blue as the noonday sky,",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "his feathers soft as fallen snow.",
+          "italic": false,
+          "indent": 0
+        }
+      ],
+      [
+        {
+          "text": "each morning i would idly sit",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "and await my little blue bird,",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "who came to sing his morning song,",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "a tender tune of good morrow.",
+          "italic": false,
+          "indent": 0
+        }
+      ],
+      [
+        {
+          "text": "but my blue bird no longer comes",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "to serenade me sweet hues",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "and i am left alone",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "to seek solace of my own,",
+          "italic": false,
+          "indent": 1
+        },
+        {
+          "text": "my own glimmer of hope",
+          "italic": false,
+          "indent": 2
+        },
+        {
+          "text": "my own hand to hold.",
+          "italic": false,
+          "indent": 3
+        }
+      ],
+      [
+        {
+          "text": "lately, each sundown",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "the wind grows ever harshly",
+          "italic": false,
+          "indent": 2
+        },
+        {
+          "text": "the fading gold brushes my cheeks",
+          "italic": false,
+          "indent": 1
+        },
+        {
+          "text": "to belittle me of another day's end",
+          "italic": false,
+          "indent": 1
+        },
+        {
+          "text": "and the jays still sing their tune",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "but i do not listen,",
+          "italic": false,
+          "indent": 1
+        },
+        {
+          "text": "for it is not for me.",
+          "italic": false,
+          "indent": 1
+        }
+      ],
+      [
+        {
+          "text": "every twilight by bedside, i pray",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "whilst looking from the windowsill",
+          "italic": false,
+          "indent": 1
+        },
+        {
+          "text": "if not today, perhaps tomorrow",
+          "italic": false,
+          "indent": 2
+        },
+        {
+          "text": "for my blue bird to come by",
+          "italic": false,
+          "indent": 2
+        },
+        {
+          "text": "every sunrise i wake in aching despair",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "to hear no longer the sweet, serenading chirps",
+          "italic": false,
+          "indent": 1
+        },
+        {
+          "text": "for where his morning song once dwelt.",
+          "italic": false,
+          "indent": 1
+        }
+      ],
+      [
+        {
+          "text": "still i send my thoughts to him,",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "my little blue bird",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "wherever he may roam,",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "that the winds be gentle on his wings,",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "and the autumn cold not reach his bones",
+          "italic": false,
+          "indent": 0
+        }
+      ],
+      [
+        {
+          "text": "for my heart goes out to him,",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "with the tender hope",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "for my blue bird to one day",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "return home.",
+          "italic": false,
+          "indent": 0
+        }
+      ]
+    ],
+    "date": "Nov 10, 2026"
+  },
+  {
+    "id": "september",
+    "title": "September",
+    "stanzas": [
+      [
+        {
+          "text": "Across the meadow of overgrown weeds,",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "a radiant willow",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "spread her shade about my feet.",
+          "italic": false,
+          "indent": 0
+        }
+      ],
+      [
+        {
+          "text": "So I sat down",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "beneath the weeping dress of her leaves,",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "where branches loosened into locks",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "of yellow, amber, gold,",
+          "italic": false,
+          "indent": 0
+        }
+      ],
+      [
+        {
+          "text": "“Who planted thee?”",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "I asked.",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "She answered only whispers,",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "letting down her hair",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "to sway beneath the wind’s light tickle.",
+          "italic": false,
+          "indent": 0
+        }
+      ],
+      [
+        {
+          "text": "Thus, by chance,",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "I came to sit beside this willow,",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "enamoured of her golden hues",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "in the lingering warmth",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "and quiet mists of autumn",
+          "italic": false,
+          "indent": 0
+        }
+      ],
+      [
+        {
+          "text": "Here I shall read many books, write essays,",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "and linger over art, philosophy, poetry,",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "for as long as she gives me shade",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "and sings to me",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "with the rustling of her leaves.",
+          "italic": false,
+          "indent": 0
+        }
+      ],
+      [
+        {
+          "text": "Beneath her branches,",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "I shall watch the seasons turn,",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "and come to know",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "each new-grown twig,",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "each bough that reaches",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "further than before.",
+          "italic": false,
+          "indent": 0
+        }
+      ]
+    ],
+    "date": "Nov 2, 2026"
   }
 ]
