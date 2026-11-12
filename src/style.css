@@ -94,31 +94,19 @@
   pointer-events: none;
   color: #ffe3a2;
 }
-.pattern-alignment .alignment-line {
-  fill: none;
-  stroke: currentColor;
-  stroke-opacity: .63;
-  stroke-width: .6;
-  stroke-dasharray: 1 1;
-  stroke-dashoffset: 0;
-}
 .pattern-alignment .alignment-light {
   fill: currentColor;
   filter: drop-shadow(0 0 3px #ffce7a);
 }
+.pattern-alignment .alignment-star {
+  filter: drop-shadow(0 0 1.5px #ffce7a88);
+}
 @media (prefers-reduced-motion: no-preference) {
-  .pattern-spread[aria-hidden="false"] .alignment-line {
-    animation: trace-pattern-alignment 18s 650ms ease-in-out both;
-  }
   .pattern-spread[aria-hidden="false"] .alignment-light {
     animation: twinkle-pattern-alignment var(--period) var(--phase) ease-in-out infinite;
   }
 }
-@keyframes trace-pattern-alignment {
-  from { stroke-dashoffset: 1; }
-  to { stroke-dashoffset: 0; }
-}
 @keyframes twinkle-pattern-alignment {
-  0%, 100% { opacity: .42; }
+  0%, 100% { opacity: .62; }
   50% { opacity: 1; }
 }
