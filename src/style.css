@@ -45,3 +45,7 @@
 .toolbar button:focus-visible,#reading-view a:focus-visible{outline-color:#d5bc7c}
 .gesture{color:#b9c8d5}
 .cover{border-color:transparent}
+
+/* A date belongs after the poem, with room to breathe on both layouts. */
+.poem-date{margin:2.2em 0 0;font-size:.78em;font-style:italic;line-height:1.35}
+.reading-poem .poem-date{margin-top:2.4em}
