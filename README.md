@@ -1,6 +1,6 @@
 # Selected Poems · Sara Kim
 
-An illustrated, draggable poetry book at [sarapoet.vercel.app](https://sarapoet.vercel.app/) with ten poems imported from Sara's former personal-site poetry page. Built with Vite, vanilla JavaScript, and the MIT-licensed [StPageFlip](https://github.com/Nodlik/StPageFlip). Cover: Times New Roman. Interior: locally bundled IM Fell English (SIL Open Font License).
+An illustrated, draggable poetry book at [sarapoet.vercel.app](https://sarapoet.vercel.app/) with seven poems selected from Sara's former personal-site poetry page. Built with Vite, vanilla JavaScript, and the MIT-licensed [StPageFlip](https://github.com/Nodlik/StPageFlip). Cover: Times New Roman. Interior: locally bundled IM Fell English (SIL Open Font License).
 
 ## Run on your Mac
 
@@ -18,7 +18,7 @@ Vercel builds and publishes `main` at [sarapoet.vercel.app](https://sarapoet.ver
 
 ## Poems
 
-`content/poems.json` contains the complete source text, original line breaks, stanza boundaries, italic flags, indentation, and historical source URLs. Imported 2026-10-19: 10 poems, 248 lines. The importer does not rewrite or correct text. The original poetry route is now retired; edit this file directly when adding or revising poems. `scripts/import-poems.py` is retained for provenance but its old source URL is no longer live.
+`content/poems.json` contains the seven selected poems with their original line breaks, stanza boundaries, italic flags, indentation, and historical source URLs (174 lines). The original import on 2026-10-19 contained 10 poems; See-through, Passage of Time, and There is Grace in the Unknown were removed from this public collection in November 2026 and remain recoverable from Git history. The importer does not rewrite or correct text. The original poetry route is now retired; edit this file directly when adding or revising poems. `scripts/import-poems.py` is retained for provenance but its old source URL is no longer live.
 
 Review the content diff before committing. Pagination measures the actual typeset content for each viewport, preserves whole stanzas when possible, and splits an oversized stanza only between its original lines. Contents page numbers update when pagination changes. Reading view uses the same data.
 
