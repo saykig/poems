@@ -1,6 +1,7 @@
 // Localized motion in the September painting; the original remains the fallback.
 export function startLivingArt() {
  const reduce=matchMedia('(prefers-reduced-motion: reduce)');
+ let seaGlow;
  let motionEnabled=!reduce.matches;
  const control=document.createElement('button');control.type='button';control.textContent=motionEnabled?'Pause leaves':'Play leaves';control.setAttribute('aria-pressed',String(motionEnabled));control.style.cssText='position:fixed;right:24px;bottom:18px;z-index:60;padding:8px 14px;border:1px solid #ffffff40;border-radius:4px;background:#243a52;color:#f5eedb;font:14px Georgia;display:none';document.body.append(control);control.onclick=()=>{motionEnabled=!motionEnabled;control.textContent=motionEnabled?'Pause leaves':'Play leaves';control.setAttribute('aria-pressed',String(motionEnabled));};
  const overlay=document.createElement('canvas'); overlay.setAttribute('aria-hidden','true');
@@ -8,6 +9,13 @@ export function startLivingArt() {
  const ctx=overlay.getContext('2d'); let last=0, elapsed=0;
  const leaves=Array.from({length:9},(_,i)=>({phase:i/9,size:5+i%4,seed:i*2.399}));
  function frame(now){requestAnimationFrame(frame);if(now-last<33)return;const dt=Math.min((now-last)/1000,.05);last=now;
+  const seaFigure = document.querySelector('.artwork-page[data-poem-id="i-wandered-through-the-sea"][aria-hidden="false"] figure');
+  if (!reduce.matches && seaFigure?.querySelector('img')?.naturalWidth && !document.body.dataset.artTurning) {
+    if (seaGlow?.parentElement !== seaFigure) seaGlow = createSeaGlow(seaFigure);
+    seaGlow.hidden = false;
+  } else if (seaGlow) {
+    seaGlow.hidden = true;
+  }
   const page=document.querySelector('.artwork-page[data-poem-id="september"][aria-hidden="false"]');
   control.style.display=page&&!document.querySelector('#experience').hidden?'block':'none';
   const allowed=page&&!document.hidden&&motionEnabled&&!document.querySelector('#experience').hidden&&!document.body.dataset.artTurning;
@@ -21,4 +29,47 @@ export function startLivingArt() {
   }
  }
  requestAnimationFrame(frame);
+}
+
+// Coordinates are measured on a 645 × 870 copy of the sea illustration.
+const seaStars = [
+  [56, 22], [165, 47], [234, 33], [339, 102], [429, 47],
+  [542, 78], [183, 114], [88, 148], [140, 181], [227, 175],
+  [301, 153], [423, 133], [447, 199], [230, 218], [183, 246],
+  [118, 270], [206, 294], [246, 284], [372, 264], [605, 240],
+];
+
+function createSeaGlow(figure) {
+  const overlay = document.createElement('div');
+  overlay.className = 'sea-twinkle';
+  overlay.setAttribute('aria-hidden', 'true');
+  overlay.style.cssText = 'position:absolute;inset:0;pointer-events:none;display:grid;place-items:center;container-type:size;mix-blend-mode:screen';
+  const artworkBounds = document.createElement('div');
+  artworkBounds.style.cssText = 'position:relative;width:min(100%,calc(100cqh * 1290 / 1740));aspect-ratio:1290 / 1740';
+
+  function addGlow(x, y, width, height, peak, duration, delay) {
+    const light = document.createElement('span');
+    Object.assign(light.style, {
+      position: 'absolute',
+      left: `${x / 645 * 100}%`,
+      top: `${y / 870 * 100}%`,
+      width: `${width / 645 * 100}%`,
+      height: `${height / 870 * 100}%`,
+      transform: 'translate(-50%, -50%)',
+      background: 'radial-gradient(ellipse, rgba(255,211,153,.85), rgba(246,169,99,.26) 36%, transparent 72%)',
+      opacity: '0',
+    });
+    artworkBounds.append(light);
+    light.animate([{opacity: 0.03}, {opacity: peak}, {opacity: 0.03}], {
+      duration, delay, iterations: Infinity, easing: 'ease-in-out',
+    });
+  }
+
+  seaStars.forEach(([x, y], index) => {
+    addGlow(x, y, 9, 11, 0.34 + (index % 3) * 0.07, 3000 + (index % 7) * 540, -index * 467);
+  });
+  addGlow(267, 197, 24, 26, 0.27, 7200, -2100);
+  overlay.append(artworkBounds);
+  figure.append(overlay);
+  return overlay;
 }
