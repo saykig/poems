@@ -1,3 +1,4 @@
+import { startLivingArt } from './living-art.js';
 import { PageFlip } from 'page-flip';
 import '@fontsource/im-fell-english/400.css';
 import '@fontsource/im-fell-english/400-italic.css';
@@ -148,6 +149,7 @@ function renderBook() {
     mobileScrollSupport:false,showPageCorners:true,disableFlipByClick:true});
   flip.on('init', sync); flip.on('flip', sync); flip.on('changeOrientation', sync);
   flip.on('changeState', e => {
+    if(e.data === 'read') delete document.body.dataset.artTurning; else document.body.dataset.artTurning = 'true';
     if (['user_fold','flipping'].includes(e.data) && flip.getCurrentPageIndex() === 0) position.classList.remove('closed');
     if (e.data === 'read') sync();
   });
@@ -218,3 +220,5 @@ document.querySelector('#experience').addEventListener('pointermove', event => {
   document.body.append(dust);
   dust.addEventListener('animationend', () => dust.remove(), {once:true});
 });
+
+startLivingArt();
