@@ -25,7 +25,7 @@
 .cover-frame{z-index:1}
 .bookplate{background:#06264b;color:#d8bd84}
 .dedication{position:absolute;inset:0;display:grid;place-items:center}
-.dedication p{font:400 5cqw 'Cormorant Garamond',Georgia,serif;letter-spacing:.04em;margin:0}
+.dedication p{font:400 5cqw 'Cormorant Garamond',Georgia,serif;letter-spacing:.04em;line-height:1.35;max-width:82%;text-align:center;margin:0}
 .bookplate .page-number{color:#d8bd84}
 
 .cover-spark{position:absolute;width:3px;height:3px;background:#f5d58b;border-radius:50%;pointer-events:none;z-index:2;animation:cover-twinkle var(--duration) ease-in-out var(--delay) infinite;box-shadow:0 0 4px #e8bf69}
