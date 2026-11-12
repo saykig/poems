@@ -119,22 +119,40 @@ function paginate(poem, width, height) {
   return chunks.map(html => leaf(pageClass, `<div class="poem-flow">${html}</div>`, poem.id));
 }
 
+// Bright points sampled from the painting in the spread's 720 × 486 coordinates.
+const paintedPatternStars = [
+  [183, 22], [143, 56], [180, 129], [52, 143], [242, 105], [336, 41],
+  [265, 199], [380, 89], [468, 75], [616, 96], [651, 71], [632, 6],
+  [538, 142], [566, 196], [46, 327],
+];
+
+function patternTwinkleTiming() {
+  const period = 7 + Math.random() * 9;
+  const phase = -Math.random() * period;
+  return `--period:${period}s;--phase:${phase}s`;
+}
+
 function addPatternAlignment(page, side) {
   if (!page) return;
   const viewLeft = side === 'left' ? 0 : 360;
   page.classList.add('pattern-spread', `pattern-spread-${side}`);
+  const paintedLights = paintedPatternStars
+    .filter(([x]) => x >= viewLeft && x < viewLeft + 360)
+    .map(([x, y]) => `<circle class="pattern-painted-light" cx="${x}" cy="${y}" r="1.35"
+                           style="${patternTwinkleTiming()}"/>`).join('');
   page.insertAdjacentHTML('afterbegin', `
     <svg class="pattern-alignment" viewBox="${viewLeft} 0 360 486"
          preserveAspectRatio="none" aria-hidden="true" focusable="false">
-      <path class="alignment-light alignment-star" transform="translate(270 20)"
+      ${paintedLights}
+      <path class="alignment-light alignment-star" transform="translate(270 20) scale(1.24)"
             d="M 0 -2.5 L .55 -.55 L 2 0 L .55 .55 L 0 2.5 L -.55 .55 L -2 0 L -.55 -.55 Z"
-              style="--period:5.8s;--phase:-1.6s"/>
+              style="${patternTwinkleTiming()}"/>
       <path class="alignment-light" transform="translate(406 29)"
             d="M 0 -5 C -6 -5 -7 3 -2 5 C 0 6 3 5 4 2 C 0 4 -4 0 0 -5 Z"
             style="--period:7s;--phase:-3.1s"/>
-      <path class="alignment-light alignment-star" transform="translate(552 39) scale(1.12)"
+      <path class="alignment-light alignment-star" transform="translate(552 39) scale(1.38)"
             d="M 0 -2.5 L .55 -.55 L 2 0 L .55 .55 L 0 2.5 L -.55 .55 L -2 0 L -.55 -.55 Z"
-              style="--period:4.7s;--phase:-.9s"/>
+              style="${patternTwinkleTiming()}"/>
     </svg>`);
 }
 
