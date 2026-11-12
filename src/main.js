@@ -130,7 +130,7 @@ function addPatternAlignment(page, side) {
       <circle class="alignment-light" cx="270" cy="20" r="2.25"
               style="--period:5.8s;--phase:-1.6s"/>
       <path class="alignment-light" transform="translate(406 29)"
-            d="M -2.8 -4 A 4.4 4.4 0 1 0 3.3 2.7 A 4.1 4.1 0 0 1 -2.8 -4 Z"
+            d="M 0 -5 C -6 -5 -7 3 -2 5 C 0 6 3 5 4 2 C 0 4 -4 0 0 -5 Z"
             style="--period:7s;--phase:-3.1s"/>
       <circle class="alignment-light" cx="552" cy="39" r="2.85"
               style="--period:4.7s;--phase:-.9s"/>
