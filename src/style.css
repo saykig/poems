@@ -52,5 +52,9 @@
 
 /* Match the paper fold on the blue dedication leaf. */
 .bookplate.--left::after,.bookplate.--right::after{content:'';position:absolute;top:0;bottom:0;width:8%;pointer-events:none;z-index:3}
-.bookplate.--left::after{right:0;background:linear-gradient(to right,transparent,#0004)}
-.bookplate.--right::after{left:0;background:linear-gradient(to left,transparent,#0004)}
+.bookplate.--left::after{right:0;background:linear-gradient(to right,transparent,#0002)}
+.bookplate.--right::after{left:0;background:linear-gradient(to left,transparent,#0002)}
+
+/* Keep keyboard focus visible in the page-turn hint, without drawing a frame around the leaf. */
+#book:focus-visible{outline:none}
+#experience:has(#book:focus-visible) .gesture{text-decoration:underline;text-underline-offset:3px;color:#e4c687}
