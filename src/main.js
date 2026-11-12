@@ -105,6 +105,10 @@ function paginate(poem, width, height) {
   probe.remove();
   return chunks.map(html => leaf(pageClass, `<div class="poem-flow">${html}</div>`, poem.id));
 }
+function artworkPage(poem) {
+  const {src, alt} = poem.artwork;
+  return leaf('artwork-page', `<figure><img src="${escape(src)}" alt="${escape(alt)}" loading="eager"></figure>`, poem.id);
+}
 function renderBook() {
   const width = stage.clientWidth / (matchMedia('(max-width:700px)').matches ? 1 : 2);
   if (Math.abs(previousWidth - width) < 1 && flip) return;
@@ -125,11 +129,18 @@ function renderBook() {
   for (const poem of poems) {
     starts.push(pages.length);
     pages.push(...paginate(poem, width, height));
+    if (poem.artwork) {
+      // Art stays with its poem and opens on a right-hand page.
+      if (pages.length % 2 !== 0) pages.push(leaf('blank-page', ''));
+      pages.push(artworkPage(poem));
+    }
   }
+  // Keep the back cover on the final right-hand leaf.
+  if (pages.length % 2 === 0) pages.push(leaf('endpaper', ''));
   pages.push(leaf('cover back-cover', '<div class="cover-frame"></div>'));
   pages[2].querySelector('.toc').innerHTML = poems.map((poem, i) => `<button data-page="${starts[i]}"><span>${escape(poem.title)}</span><span>${starts[i]}</span></button>`).join('');
   pages.forEach((p, i) => {
-    if (i > 0 && i < pages.length - 1) p.insertAdjacentHTML('beforeend', `<span class="page-number" aria-hidden="true">${i}</span>`);
+    if (i > 0 && i < pages.length - 1 && !p.classList.contains('blank-page') && !p.classList.contains('endpaper')) p.insertAdjacentHTML('beforeend', `<span class="page-number" aria-hidden="true">${i}</span>`);
     book.append(p);
   });
   flip = new PageFlip(book, {width,height,size:'fixed',showCover:true,usePortrait:true,
@@ -170,7 +181,7 @@ function turn(direction) {
   if (direction < 0 && index > 0) reducedMotion.matches ? flip.turnToPrevPage() : flip.flipPrev();
 }
 const readingView = document.querySelector('#reading-view');
-readingView.innerHTML = `<h2 class="reading-title">Selected Poems</h2><p class="byline">Sara Kim</p><nav class="reading-toc" aria-label="Poems">${poems.map(p => `<a href="#read-${p.id}">${escape(p.title)}</a>`).join('')}</nav>${poems.map(p => `<article id="read-${p.id}" class="reading-poem" data-poem-id="${p.id}"><h2>${escape(p.title)}</h2>${p.stanzas.map(stanza => stanzaHTML(stanza)).join('')}${dateHTML(p)}</article>`).join('')}`;
+readingView.innerHTML = `<h2 class="reading-title">Selected Poems</h2><p class="byline">Sara Kim</p><nav class="reading-toc" aria-label="Poems">${poems.map(p => `<a href="#read-${p.id}">${escape(p.title)}</a>`).join('')}</nav>${poems.map(p => `<article id="read-${p.id}" class="reading-poem" data-poem-id="${p.id}"><h2>${escape(p.title)}</h2>${p.stanzas.map(stanza => stanzaHTML(stanza)).join('')}${dateHTML(p)}${p.artwork ? `<figure class="reading-artwork"><img src="${escape(p.artwork.src)}" alt="${escape(p.artwork.alt)}" loading="lazy"></figure>` : ''}</article>`).join('')}`;
 function setReading(reading) {
   readingView.hidden = !reading;
   document.querySelector('#experience').hidden = reading;
