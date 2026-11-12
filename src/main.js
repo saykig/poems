@@ -118,6 +118,25 @@ function paginate(poem, width, height) {
   probe.remove();
   return chunks.map(html => leaf(pageClass, `<div class="poem-flow">${html}</div>`, poem.id));
 }
+
+function addPatternAlignment(page, side) {
+  if (!page) return;
+  const viewLeft = side === 'left' ? 0 : 360;
+  page.classList.add('pattern-spread', `pattern-spread-${side}`);
+  page.insertAdjacentHTML('afterbegin', `
+    <svg class="pattern-alignment" viewBox="${viewLeft} 0 360 486"
+         preserveAspectRatio="none" aria-hidden="true" focusable="false">
+      <path class="alignment-line" pathLength="1" d="M 270 20 L 406 29 L 552 39"/>
+      <circle class="alignment-light" cx="270" cy="20" r="2.25"
+              style="--period:5.8s;--phase:-1.6s"/>
+      <path class="alignment-light" transform="translate(406 29)"
+            d="M -2.8 -4 A 4.4 4.4 0 1 0 3.3 2.7 A 4.1 4.1 0 0 1 -2.8 -4 Z"
+            style="--period:7s;--phase:-3.1s"/>
+      <circle class="alignment-light" cx="552" cy="39" r="2.85"
+              style="--period:4.7s;--phase:-.9s"/>
+    </svg>`);
+}
+
 function artworkPage(poem) {
   const {src, alt} = poem.artwork;
   return leaf('artwork-page', `<figure><img src="${escape(src)}" alt="${escape(alt)}" loading="eager"></figure>`, poem.id);
@@ -143,8 +162,8 @@ function renderBook() {
     starts.push(pages.length);
     const poemPages = paginate(poem, width, height);
     if (poem.id === 'patterns-against-distance') {
-      poemPages[0]?.classList.add('pattern-spread', 'pattern-spread-left');
-      poemPages[1]?.classList.add('pattern-spread', 'pattern-spread-right');
+      addPatternAlignment(poemPages[0], 'left');
+      addPatternAlignment(poemPages[1], 'right');
     }
     pages.push(...poemPages);
     if (poem.artwork) {
