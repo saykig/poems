@@ -129,7 +129,12 @@ function renderBook() {
   const starts = [];
   for (const poem of poems) {
     starts.push(pages.length);
-    pages.push(...paginate(poem, width, height));
+    const poemPages = paginate(poem, width, height);
+    if (poem.id === 'patterns-against-distance') {
+      poemPages[0]?.classList.add('pattern-spread', 'pattern-spread-left');
+      poemPages[1]?.classList.add('pattern-spread', 'pattern-spread-right');
+    }
+    pages.push(...poemPages);
     if (poem.artwork) {
       // Art stays with its poem and opens on a right-hand page.
       if (pages.length % 2 !== 0) pages.push(leaf('blank-page', ''));

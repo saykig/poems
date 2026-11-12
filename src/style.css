@@ -67,3 +67,16 @@
 .endpaper{background:#06264b;background-image:none}
 .reading-artwork{width:min(100%,430px);margin:48px auto 0;background:#071b33}
 .reading-artwork img{display:block;width:100%;height:auto}
+
+/* The supplied painting fits the 860:580 open spread, split at the gutter. */
+:root .page.pattern-spread{
+  background-color:#0b2b48!important;
+  background-image:linear-gradient(180deg,rgba(3,19,36,.62) 0%,rgba(3,19,36,.56) 57%,rgba(3,19,36,.35) 78%,rgba(3,19,36,.06) 92%),url('/art/patterns-against-distance.webp')!important;
+  background-size:100% 100%,200% 100%!important;
+  background-repeat:no-repeat!important;
+  color:#fff3da!important;
+}
+:root .page.pattern-spread-left{background-position:center,left top!important}
+:root .page.pattern-spread-right{background-position:center,right top!important}
+.pattern-spread .poem-flow{position:absolute;z-index:1;text-shadow:0 1px 2px #031627,0 0 7px #031627a8}
+.pattern-spread .page-number{color:#fff3da;text-shadow:0 1px 3px #071b2c,0 0 5px #071b2c}
