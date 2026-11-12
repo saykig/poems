@@ -24,6 +24,8 @@ Review the content diff before committing. Pagination measures the actual typese
 
 Drag corners using mouse/touch; Left/Right arrow keys also turn pages. Home returns to the cover. Contents jumps to each poem. There are no opening slogans, page-turn buttons, or site footer.
 
+The **Dark pages** control switches the contents and poem leaves to navy paper with light text. The choice is saved in the browser.
+
 ## Archived artwork
 
 The book no longer displays illustrations. Earlier image assets and the illustrated-spread pilot instructions are stored under `design/archive-art/`, outside the published site. The original artwork provenance is retained below for reference.

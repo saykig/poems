@@ -5,6 +5,6 @@ Experience mode. A moss-green leather-like volume on a quiet flax-colored surfac
 
 Old Standard TT provides upright historical book typography inside. Poem body text uses one size throughout the book; poem headings use one consistent, slightly larger size and appear only once. Stanzas, line breaks, deliberate internal spaces, italics and indentation retain the published source. Pagination measures real typeset content at the current viewport and moves whole stanzas where possible. Verse stays above the page-number area. A larger book uses available height and width; phones retain readable single leaves. A plain reading view is always available.
 
-Interior poem pages contain text only. Every poem follows the same responsive pagination system, with page numbers below the verse. Earlier artwork is archived in `design/archive-art/` and is not part of the published site.
+Interior poem pages contain text only. Every poem follows the same responsive pagination system, with page numbers below the verse. The reader can switch the contents and poem pages between ivory paper with dark ink and navy paper with light ink; the blue cover and dedication page retain their colors. Earlier artwork is archived in `design/archive-art/` and is not part of the published site.
 
 Central binding shadows and page edges establish depth. One signature motion: user-driven page folding while the closed volume recenters as it opens. Keyboard navigation offers an alternative. Reduced motion removes recentering transitions and uses immediate programmatic turns.

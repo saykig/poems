@@ -26,8 +26,20 @@ const position = document.querySelector('#book-position');
 const stage = document.querySelector('.stage');
 const status = document.querySelector('#page-status');
 const toggle = document.querySelector('#reading-toggle');
+const themeToggle = document.querySelector('#theme-toggle');
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 let flip, pages = [], book, previousWidth = 0;
+
+function setPageTheme(dark) {
+  document.documentElement.dataset.pageTheme = dark ? 'dark' : 'light';
+  themeToggle.setAttribute('aria-pressed', String(dark));
+  themeToggle.textContent = dark ? 'Light pages' : 'Dark pages';
+  try { localStorage.setItem('poems-page-theme', dark ? 'dark' : 'light'); } catch {}
+}
+let savedPageTheme;
+try { savedPageTheme = localStorage.getItem('poems-page-theme'); } catch {}
+setPageTheme(savedPageTheme === 'dark');
+themeToggle.addEventListener('click', () => setPageTheme(themeToggle.getAttribute('aria-pressed') !== 'true'));
 
 // Measure actual typeset stanzas at this viewport; move whole stanzas where possible.
 // If a stanza cannot fit on an empty leaf, split only between original lines.
@@ -141,6 +153,7 @@ readingView.innerHTML = `<h2 class="reading-title">Selected Poems</h2><p class="
 function setReading(reading) {
   readingView.hidden = !reading;
   document.querySelector('#experience').hidden = reading;
+  themeToggle.hidden = reading;
   toggle.setAttribute('aria-pressed', String(reading));
   toggle.textContent = reading ? 'Back to the book' : 'Reading view';
   if (!reading) requestAnimationFrame(() => { renderBook(); flip.update(); sync(); });
