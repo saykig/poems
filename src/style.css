@@ -50,9 +50,7 @@
 .poem-date{margin:3.6em 0 0;font-family:'IM Fell English',Georgia,serif;font-size:.78em;font-style:italic;line-height:1.35}
 .reading-poem .poem-date{margin-top:3.6em}
 
-/* A soft fold stays visible at the centre of every open spread. */
-.page.--left::after,.page.--right::after{content:'';position:absolute;top:0;bottom:0;width:8%;pointer-events:none;z-index:3}
-.page.--left::after{right:0;background:linear-gradient(to right,transparent,#17202b33)}
-.page.--right::after{left:0;background:linear-gradient(to left,transparent,#17202b33)}
-.bookplate.--left::after,.bookplate.--right::after{background:linear-gradient(to right,transparent,#0009)}
-.bookplate.--right::after{background:linear-gradient(to left,transparent,#0009)}
+/* Match the paper fold on the blue dedication leaf. */
+.bookplate.--left::after,.bookplate.--right::after{content:'';position:absolute;top:0;bottom:0;width:8%;pointer-events:none;z-index:3}
+.bookplate.--left::after{right:0;background:linear-gradient(to right,transparent,#0004)}
+.bookplate.--right::after{left:0;background:linear-gradient(to left,transparent,#0004)}
