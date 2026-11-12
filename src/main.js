@@ -126,7 +126,7 @@ function renderBook() {
     starts.push(pages.length);
     pages.push(...paginate(poem, width, height));
   }
-  pages.push(leaf('cover back-cover', `<div class="cover-frame"><p class="cover-author">SARA KIM</p></div>`));
+  pages.push(leaf('cover back-cover', '<div class="cover-frame"></div>'));
   pages[2].querySelector('.toc').innerHTML = poems.map((poem, i) => `<button data-page="${starts[i]}"><span>${escape(poem.title)}</span><span>${starts[i]}</span></button>`).join('');
   pages.forEach((p, i) => {
     if (i > 0 && i < pages.length - 1) p.insertAdjacentHTML('beforeend', `<span class="page-number" aria-hidden="true">${i}</span>`);
