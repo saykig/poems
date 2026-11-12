@@ -44,4 +44,4 @@
 .toolbar button:hover,#reading-view a:hover{color:#d5bc7c}
 .toolbar button:focus-visible,#reading-view a:focus-visible{outline-color:#d5bc7c}
 .gesture{color:#b9c8d5}
-.cover{border-color:#496484}
+.cover{border-color:transparent}
