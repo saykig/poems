@@ -8,7 +8,15 @@ export function startLivingArt() {
  function setup(img) {
   const canvas=document.createElement('canvas'); canvas.setAttribute('aria-hidden','true');
   canvas.style.cssText='position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1';
-  const gl=canvas.getContext('webgl',{alpha:false,antialias:false}); if(!gl)return null;
+  const gl=canvas.getContext('webgl',{alpha:false,antialias:false}); if(!gl){
+   const c=document.createElement('canvas');c.setAttribute('aria-hidden','true');c.style.cssText=canvas.style.cssText;c.width=img.naturalWidth;c.height=img.naturalHeight;const x=c.getContext('2d');img.parentElement.append(c);
+   return {canvas:c,draw(t){const w=c.width,h=c.height;x.drawImage(img,0,0,w,h);
+    // Thin strips with zero displacement at region boundaries preserve anchors.
+    for(const region of [[.04,.10,.20,.54],[.31,.05,.20,.55],[.55,.08,.19,.43],[.875,.725,.036,.052]]){
+     const [rx,ry,rw,rh]=region;const hair=ry>.7;for(let y=0;y<rh*h;y+=2){const f=y/(rh*h),shift=Math.sin(f*Math.PI)*Math.sin(t*.8+rx*13+f)*(hair?1.1:1.8);x.drawImage(img,rx*w,ry*h+y,rw*w,2,rx*w+shift,ry*h+y,rw*w,2);}
+    }
+   },destroy(){c.remove();}};
+  }
   const shader=(type,source)=>{const s=gl.createShader(type);gl.shaderSource(s,source);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(s));return s;};
   const p=gl.createProgram();
   gl.attachShader(p,shader(gl.VERTEX_SHADER,'attribute vec2 a; varying vec2 uv; void main(){uv=vec2((a.x+1.0)*.5,(1.0-a.y)*.5);gl_Position=vec4(a,0.,1.);}'));
