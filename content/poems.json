@@ -1251,7 +1251,11 @@
         }
       ]
     ],
-    "date": "Nov 2, 2026"
+    "date": "Nov 2, 2026",
+    "artwork": {
+      "src": "/art/september.jpg",
+      "alt": "A woman sits beneath a leafy willow beside a turquoise lake."
+    }
   },
   {
     "id": "june",
