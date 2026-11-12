@@ -59,29 +59,24 @@ function paginate(poem, width, height) {
   const fits = () => flow.scrollHeight <= flow.clientHeight + 1;
   const save = () => { chunks.push(flow.innerHTML); flow.innerHTML = heading(); };
   for (const stanza of poem.stanzas) {
-    const p = document.createElement('p'); p.className = 'stanza';
-    p.innerHTML = stanza.map((line, i) => lineHTML(line, offset + i)).join('');
-    const hadContent = Boolean(flow.querySelector('.stanza'));
-    flow.append(p);
-    if (!fits()) {
-      p.remove();
-      if (hadContent) save();
-      flow.append(p);
+    let fragment = document.createElement('p');
+    fragment.className = 'stanza';
+    flow.append(fragment);
+    for (const lineData of stanza) {
+      const holder = document.createElement('span');
+      holder.innerHTML = lineHTML(lineData, offset++);
+      const line = holder.firstElementChild;
+      fragment.append(line);
       if (!fits()) {
-        p.remove();
-        let fragment = document.createElement('p'); fragment.className = 'stanza'; flow.append(fragment);
-        for (let i = 0; i < stanza.length; i++) {
-          const holder = document.createElement('span'); holder.innerHTML = lineHTML(stanza[i], offset + i);
-          const line = holder.firstElementChild; fragment.append(line);
-          if (!fits() && fragment.children.length > 1) {
-            line.remove(); save();
-            fragment = document.createElement('p'); fragment.className = 'stanza';
-            fragment.append(line); flow.append(fragment);
-          }
-        }
+        line.remove();
+        if (!fragment.childElementCount) fragment.remove();
+        save();
+        fragment = document.createElement('p');
+        fragment.className = 'stanza';
+        flow.append(fragment);
+        fragment.append(line);
       }
     }
-    offset += stanza.length;
   }
   if (poem.date) {
     const date = document.createElement('p');
