@@ -63,3 +63,16 @@
 .polaroid-composition:has(.panorama-right) .polaroid-top{top:10%}
 .sea-vignette{bottom:-2%}
 .pattern-piece.hill{bottom:-1%}
+
+/* One type scale for every poem leaf; keep the footer clear of verse. */
+:root{--book-poem-size:3.5cqw;--book-heading-size:4.5cqw}
+.poem-flow,.short-poem .poem-flow,.page[data-poem-id="patterns-against-distance"] .poem-flow,.composition-text,.pattern-first,.polaroid-bottom,.sea-second,.polaroid-flow,.polaroid-ending .polaroid-flow{font-size:var(--book-poem-size)}
+.poem-flow h2,.polaroid-composition>h2,.pattern-composition>h2,.sea-composition>h2{font-size:var(--book-heading-size)}
+.poem-flow,.short-poem .poem-flow{bottom:10%;line-height:1.43}
+.composition-text,.pattern-first,.polaroid-bottom,.sea-second{line-height:1.32}
+.composition-text .stanza{margin-bottom:.5em}.composition-text .stanza:last-child{margin-bottom:0}
+.pattern-piece.night{top:9%}.pattern-first{top:29%}
+.pattern-second-top{top:10%}.pattern-piece.lake{top:33%}.pattern-second-bottom{top:57%}
+.polaroid-top{top:13%}.polaroid-panorama{top:33%;height:29%}
+.panorama-left{left:40%}.panorama-right{right:40%}
+.polaroid-bottom{top:63%}.polaroid-composition:has(.panorama-right) .polaroid-top{top:8%}
