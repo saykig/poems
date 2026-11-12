@@ -1,3 +1,5 @@
+Current cover direction: use the supplied blue cloth image with its gold star. Selected Poems sits above the star; Sara Kim sits near the bottom. Cormorant Garamond semibold uses fine highlights and offset shadows to suggest gold thread pressed into cloth. This replaces the former green, Times New Roman cover. Interior typography remains unchanged.
+
 # Visual system
 Experience mode. A moss-green leather-like volume on a quiet flax-colored surface. Faded gold tooling, warm ivory paper, brown-black ink. The cover is purely typographic: Times New Roman, uppercase SELECTED POEMS, the retained fleuron, and SARA KIM at the bottom. No cover image, image texture, subtitle, footer, or opening button.
 

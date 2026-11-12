@@ -7,3 +7,12 @@
 .poem-flow,.reading-poem{font-family:"Old Standard TT",Georgia,serif}
 .poem-flow .italic,.reading-poem .italic{font-family:"IM Fell English",Georgia,serif}
 .poem-flow h2,.reading-poem h2{font-style:normal;letter-spacing:.045em;font-variant-caps:small-caps}
+
+/* Supplied cloth cover, with raised gold thread lettering. */
+.cover{background:#06264b url('/cover/blue-cloth.png') center center/cover no-repeat;padding:0;border-color:#071d35;box-shadow:inset 8px 0 12px #00132999,inset -2px 0 3px #7893ad44!important}
+.cover-frame{border:0;outline:0;padding:0 8%}
+.cover h2,.cover-author{font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;color:#c4a66b;text-shadow:-.4px -.6px 0 #f1dca3,.6px 1px 0 #644b26,1px 2px 2px #00162bd9;-webkit-text-stroke:.2px #bca06a}
+.cover h2{font-size:10cqw;line-height:1.18;letter-spacing:.09em;margin:23% 0 0}
+.cover-author{font-size:4.4cqw;letter-spacing:.2em;bottom:12%}
+.cover h2::after,.cover-author::after{content:'';position:absolute;inset:0;pointer-events:none}
+.back-cover .cover-author{bottom:12%}

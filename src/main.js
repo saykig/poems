@@ -2,6 +2,7 @@ import { PageFlip } from 'page-flip';
 import '@fontsource/im-fell-english/400.css';
 import '@fontsource/im-fell-english/400-italic.css';
 import poems from '../content/poems.json';
+import '@fontsource/cormorant-garamond/600.css';
 import './style.css';
 
 const ornament = '<span class="ornament" aria-hidden="true">❦</span>';
@@ -82,7 +83,7 @@ function renderBook() {
   position.innerHTML = '<div id="book" tabindex="0" role="group" aria-label="Poetry book. Drag a corner or use the left and right arrow keys to turn pages."></div>';
   book = position.querySelector('#book');
   pages = [
-    leaf('cover', `<div class="cover-frame"><h2>SELECTED<br>POEMS</h2>${ornament}<p class="cover-author">SARA KIM</p></div>`),
+    leaf('cover', `<div class="cover-frame"><h2>SELECTED<br>POEMS</h2><p class="cover-author">SARA KIM</p></div>`),
     leaf('bookplate', `<div class="bookplate-inner">${ornament}<p>Selected Poems</p><h2>Sara Kim</h2></div>`),
     leaf('contents-page', '<div class="contents-inner"><h2>Contents</h2><nav class="toc" aria-label="Poems"></nav></div>'),
   ];
@@ -91,7 +92,7 @@ function renderBook() {
     starts.push(pages.length);
     pages.push(...paginate(poem, width, height));
   }
-  pages.push(leaf('cover back-cover', `<div class="cover-frame">${ornament}<p class="cover-author">SARA KIM</p></div>`));
+  pages.push(leaf('cover back-cover', `<div class="cover-frame"><p class="cover-author">SARA KIM</p></div>`));
   pages[2].querySelector('.toc').innerHTML = poems.map((poem, i) => `<button data-page="${starts[i]}"><span>${escape(poem.title)}</span><span>${starts[i]}</span></button>`).join('');
   pages.forEach((p, i) => {
     if (i > 0 && i < pages.length - 1) p.insertAdjacentHTML('beforeend', `<span class="page-number" aria-hidden="true">${i}</span>`);
