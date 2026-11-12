@@ -84,3 +84,42 @@
 /* Give both halves of the short poem comfortable, balanced typesetting. */
 .pattern-spread .poem-flow{font-size:max(12px,3cqw);line-height:1.45}
 .pattern-spread .poem-flow h2{font-size:max(20px,4.5cqw)}
+
+/* The May 19 sky is drawn in spread coordinates, with one half on each page. */
+.pattern-alignment {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  color: #ffe3a2;
+}
+.pattern-alignment .alignment-line {
+  fill: none;
+  stroke: currentColor;
+  stroke-opacity: .63;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+.pattern-alignment .alignment-light {
+  fill: currentColor;
+  filter: drop-shadow(0 0 3px #ffce7a);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pattern-spread[aria-hidden="false"] .alignment-line {
+    animation: trace-pattern-alignment 18s 650ms ease-in-out both;
+  }
+  .pattern-spread[aria-hidden="false"] .alignment-light {
+    animation: twinkle-pattern-alignment var(--period) var(--phase) ease-in-out infinite;
+  }
+}
+@keyframes trace-pattern-alignment {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+@keyframes twinkle-pattern-alignment {
+  0%, 100% { opacity: .42; }
+  50% { opacity: 1; }
+}
