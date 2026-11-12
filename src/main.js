@@ -126,13 +126,14 @@ function addPatternAlignment(page, side) {
   page.insertAdjacentHTML('afterbegin', `
     <svg class="pattern-alignment" viewBox="${viewLeft} 0 360 486"
          preserveAspectRatio="none" aria-hidden="true" focusable="false">
-      <path class="alignment-line" pathLength="1" d="M 270 20 L 406 29 L 552 39"/>
-      <circle class="alignment-light" cx="270" cy="20" r="2.25"
+      <path class="alignment-light alignment-star" transform="translate(270 20)"
+            d="M 0 -2.5 L .55 -.55 L 2 0 L .55 .55 L 0 2.5 L -.55 .55 L -2 0 L -.55 -.55 Z"
               style="--period:5.8s;--phase:-1.6s"/>
       <path class="alignment-light" transform="translate(406 29)"
             d="M 0 -5 C -6 -5 -7 3 -2 5 C 0 6 3 5 4 2 C 0 4 -4 0 0 -5 Z"
             style="--period:7s;--phase:-3.1s"/>
-      <circle class="alignment-light" cx="552" cy="39" r="2.85"
+      <path class="alignment-light alignment-star" transform="translate(552 39) scale(1.12)"
+            d="M 0 -2.5 L .55 -.55 L 2 0 L .55 .55 L 0 2.5 L -.55 .55 L -2 0 L -.55 -.55 Z"
               style="--period:4.7s;--phase:-.9s"/>
     </svg>`);
 }
