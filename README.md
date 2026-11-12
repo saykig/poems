@@ -24,7 +24,7 @@ Review the content diff before committing. Pagination measures the actual typese
 
 Drag corners using mouse/touch; Left/Right arrow keys also turn pages. Home returns to the cover. Contents jumps to each poem. There are no opening slogans, page-turn buttons, or site footer.
 
-The site uses a midnight ink background in both the book and Reading view. The **Dark pages** control switches the contents and poem leaves to navy paper with light text. The choice is saved in the browser.
+The site uses a smoky blue background in both the book and Reading view. The **Dark pages** control switches the contents and poem leaves to navy paper with light text. The choice is saved in the browser.
 
 ## Archived artwork
 
