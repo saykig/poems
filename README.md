@@ -1,6 +1,6 @@
 # Selected Poems · Sara Kim
 
-A draggable poetry book at [sarapoems.vercel.app](https://sarapoems.vercel.app/) with seven poems selected from Sara's former personal-site poetry page. Built with Vite, vanilla JavaScript, and the MIT-licensed [StPageFlip](https://github.com/Nodlik/StPageFlip). Cover: Times New Roman. Interior: locally bundled Old Standard TT and IM Fell English (SIL Open Font License).
+A draggable poetry book at [sarapoems.vercel.app](https://sarapoems.vercel.app/) with six poems selected from Sara's former personal-site poetry page. Built with Vite, vanilla JavaScript, and the MIT-licensed [StPageFlip](https://github.com/Nodlik/StPageFlip). Cover: Times New Roman. Interior: locally bundled Old Standard TT and IM Fell English (SIL Open Font License).
 
 ## Run on your Mac
 
@@ -18,7 +18,7 @@ Vercel builds and publishes `main` at [sarapoems.vercel.app](https://sarapoems.v
 
 ## Poems
 
-`content/poems.json` contains the seven selected poems with their original line breaks, stanza boundaries, italic flags, indentation, and historical source URLs (174 lines). The original import on 2026-10-19 contained 10 poems; See-through, Passage of Time, and There is Grace in the Unknown were removed from this public collection in November 2026 and remain recoverable from Git history. The importer does not rewrite or correct text. The original poetry route is now retired; edit this file directly when adding or revising poems. `scripts/import-poems.py` is retained for provenance but its old source URL is no longer live.
+`content/poems.json` contains the six selected poems with their original line breaks, stanza boundaries, italic flags, indentation, and historical source URLs (141 lines). The original import on 2026-10-19 contained 10 poems; See-through, Passage of Time, and There is Grace in the Unknown were removed from this public collection in November 2026 and remain recoverable from Git history. The importer does not rewrite or correct text. The original poetry route is now retired; edit this file directly when adding or revising poems. `scripts/import-poems.py` is retained for provenance but its old source URL is no longer live.
 
 Review the content diff before committing. Pagination measures the actual typeset content for each viewport, preserves whole stanzas when possible, and splits an oversized stanza only between its original lines. Contents page numbers update when pagination changes. Reading view uses the same data.
 
@@ -37,3 +37,5 @@ The book no longer displays illustrations. Earlier image assets and the illustra
 `i-miss.jpeg` and `the-space-between-us-moon.png` are copied from the images already associated with those poems on Sara's source site. `garden.png` and `woodland.png` were unused explorations from the first draft.
 
 Initial draft checkpoint: `b8db0fb` (committed and pushed before these revisions).
+
+How Will I Know was removed from the published collection on 2026-11-12. A workspace copy is kept in the Git-ignored `local-archive/how-will-i-know.json`. Earlier versions remain in Git history.
