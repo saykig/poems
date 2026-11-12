@@ -154,7 +154,7 @@ function renderBook() {
     mobileScrollSupport:false,showPageCorners:true,disableFlipByClick:true});
   flip.on('init', sync); flip.on('flip', sync); flip.on('changeOrientation', sync);
   flip.on('changeState', e => {
-    if(e.data === 'read') delete document.body.dataset.artTurning; else document.body.dataset.artTurning = 'true';
+    if(['flipping','user_fold'].includes(e.data)) document.body.dataset.artTurning = 'true'; else delete document.body.dataset.artTurning;
     if (['user_fold','flipping'].includes(e.data) && flip.getCurrentPageIndex() === 0) position.classList.remove('closed');
     if (e.data === 'read') sync();
   });
