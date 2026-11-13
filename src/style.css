@@ -197,7 +197,7 @@ main{min-height:calc(100svh - 62px)}
 /* Each leaf shows its half of the same painting. */
 :root .page.echoes-spread {
   background-color: #132746;
-  background-image: linear-gradient(#07152e52, #07152eb3), url('/art/echoes-of-silence-spread.webp') !important;
+  background-image: linear-gradient(#07152e85, #07152ed6), url('/art/echoes-of-silence-spread.webp') !important;
   background-size: 100% 100%, 200% 100%;
   background-repeat: no-repeat;
   color: #fff5e4;
