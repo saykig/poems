@@ -2,13 +2,62 @@ import { startLivingArt } from './living-art.js';
 import { PageFlip } from 'page-flip';
 import '@fontsource/im-fell-english/400.css';
 import '@fontsource/im-fell-english/400-italic.css';
-import poems from '../content/poems.json';
+import poemData from '../content/poems.json';
 import '@fontsource/cormorant-garamond/400.css';
 import './style.css';
 
 const coverStars = () => Array.from({length:22}, () => `<span class="cover-spark" aria-hidden="true" style="left:${5+Math.random()*90}%;top:${4+Math.random()*92}%;--duration:${4+Math.random()*5}s;--delay:${-Math.random()*9}s"></span>`).join('');
 const ornament = '<span class="ornament" aria-hidden="true">❦</span>';
 const escape = text => text.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const contentsGroups = [
+  ['On Stars', ['the-stars-do-not-know', 'the-space-between-us', 'patterns-against-distance']],
+  ['On Melancholy', ['blue-bird', 'i-miss', 'polaroids']],
+  ['On Friendship', ['september', 'june']],
+  ['On Nature', ['i-wandered-through-the-sea']],
+];
+const poemsById = new Map(poemData.map(poem => [poem.id, poem]));
+const poems = contentsGroups.flatMap(([, ids]) => ids.map(id => poemsById.get(id)));
+const jarPoems = new Set(['the-stars-do-not-know', 'the-space-between-us']);
+const jarVideo = document.createElement('video');
+jarVideo.src = '/art/stars-from-the-jar.mp4';
+jarVideo.preload = 'none';
+jarVideo.loop = true;
+jarVideo.muted = true;
+jarVideo.playsInline = true;
+let jarFrame = 0;
+let jarSurfaces = [];
+
+function drawJarFrame() {
+  if (jarVideo.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+    const half = jarVideo.videoWidth / 2;
+    for (const canvas of jarSurfaces) {
+      const x = canvas.parentElement.classList.contains('jar-spread-right') ? half : 0;
+      canvas.getContext('2d').drawImage(jarVideo, x, 0, half, jarVideo.videoHeight,
+        0, 0, canvas.width, canvas.height);
+    }
+  }
+  jarFrame = requestAnimationFrame(drawJarFrame);
+}
+
+function syncJarVideo() {
+  cancelAnimationFrame(jarFrame);
+  jarSurfaces = reducedMotion.matches || position.closest('[hidden]') || document.hidden
+    ? [] : pages.filter(page => page.getAttribute('aria-hidden') === 'false')
+      .flatMap(page => [...page.querySelectorAll('.jar-video')]);
+  if (jarSurfaces.length) {
+    jarVideo.play().catch(() => {});
+    drawJarFrame();
+  } else {
+    jarVideo.pause();
+  }
+}
+
+function addJarBackdrop(page, side) {
+  page.classList.add('jar-spread', `jar-spread-${side}`);
+  page.insertAdjacentHTML('afterbegin',
+    '<canvas class="jar-video" width="860" height="1160" aria-hidden="true"></canvas>');
+}
+
 function lineHTML(line, index) {
   return `<span class="poem-line${line.italic ? ' italic' : ''}" style="--indent:${line.indent}" data-line="${index}">${escape(line.text)}</span>`;
 }
@@ -48,7 +97,7 @@ themeToggle.addEventListener('click', () => setPageTheme(themeToggle.getAttribut
 // Measure actual typeset stanzas at this viewport; move whole stanzas where possible.
 // If a stanza cannot fit on an empty leaf, split only between original lines.
 function paginate(poem, width, height) {
-  const pageClass = 'poem-page';
+  const pageClass = jarPoems.has(poem.id) ? 'poem-page jar-poem' : 'poem-page';
   if (poem.id === 'patterns-against-distance') {
     let offset = 0;
     const makePage = (stanzas, titled) => {
@@ -158,7 +207,6 @@ function addPatternAlignment(page, side) {
 
 function artworkPage(poem) {
   const {src, alt} = poem.artwork;
-  if (poem.id === 'i-wandered-through-the-sea') return leaf('artwork-page sea-spread sea-spread-right', '', poem.id);
   return leaf('artwork-page', `<figure><img src="${escape(src)}" alt="${escape(alt)}" loading="eager"></figure>`, poem.id);
 }
 
@@ -175,7 +223,7 @@ function addSeaTwinkle(page, side) {
   const left = side === 'left' ? 0 : 724;
   const lights = seaLights.filter(([x]) => x >= left && x < left + 724)
     .map(([x,y],i) => `<ellipse class="sea-light" cx="${x}" cy="${y}" rx="${7+i%3}" ry="${9+i%3}" style="--period:${3.8+i%6*.67}s;--phase:${-i*.73}s"/>`).join('');
-  page.insertAdjacentHTML('afterbegin', `<svg class="sea-twinkle" viewBox="${left} 55 724 976" preserveAspectRatio="none" aria-hidden="true" focusable="false"><defs><radialGradient id="sea-warm-${side}"><stop stop-color="#fff8d9"/><stop offset=".28" stop-color="#ffd994" stop-opacity=".86"/><stop offset=".55" stop-color="#ffbb70" stop-opacity=".35"/><stop offset="1" stop-color="#ffad6b" stop-opacity="0"/></radialGradient></defs><g fill="url(#sea-warm-${side})">${lights}${side === 'right' ? '<ellipse class="sea-light sea-moon" cx="981" cy="238" rx="23" ry="26" style="--period:6.4s;--phase:-1.7s"/>' : ''}</g></svg>`);
+  page.insertAdjacentHTML('afterbegin', `<svg class="sea-twinkle" viewBox="${left} 55 724 976" preserveAspectRatio="none" aria-hidden="true" focusable="false"><defs><radialGradient id="sea-warm-${pages.length}-${side}"><stop stop-color="#fff8d9"/><stop offset=".28" stop-color="#ffd994" stop-opacity=".86"/><stop offset=".55" stop-color="#ffbb70" stop-opacity=".35"/><stop offset="1" stop-color="#ffad6b" stop-opacity="0"/></radialGradient></defs><g fill="url(#sea-warm-${pages.length}-${side})">${lights}${side === 'right' ? '<ellipse class="sea-light sea-moon" cx="981" cy="238" rx="23" ry="26" style="--period:6.4s;--phase:-1.7s"/>' : ''}</g></svg>`);
 }
 function renderBook() {
   const width = stage.clientWidth / (matchMedia('(max-width:700px)').matches ? 1 : 2);
@@ -195,26 +243,45 @@ function renderBook() {
   ];
   const starts = [];
   for (const poem of poems) {
+    const isSea = poem.id === 'i-wandered-through-the-sea';
+    const isPattern = poem.id === 'patterns-against-distance';
+    if ((isSea || isPattern) && pages.length % 2 === 0) {
+      pages.push(leaf('blank-page', ''));
+    }
     starts.push(pages.length);
     const poemPages = paginate(poem, width, height);
-    if (poem.id === 'patterns-against-distance') {
+    if (isPattern) {
       addPatternAlignment(poemPages[0], 'left');
       addPatternAlignment(poemPages[1], 'right');
     }
-    if (poem.id === 'i-wandered-through-the-sea') addSeaTwinkle(poemPages[poemPages.length - 1], 'left');
-    pages.push(...poemPages);
-    if (poem.artwork) {
-      // Art stays with its poem and opens on a right-hand page.
-      if (pages.length % 2 !== 0) pages.push(leaf('blank-page', ''));
-      const artPage = artworkPage(poem);
-      if (poem.id === 'i-wandered-through-the-sea') addSeaTwinkle(artPage, 'right');
+    for (const page of poemPages) {
+      const side = pages.length % 2 ? 'left' : 'right';
+      if (isSea) addSeaTwinkle(page, side);
+      if (jarPoems.has(poem.id)) addJarBackdrop(page, side);
+      pages.push(page);
+    }
+    if (isSea && pages.length % 2 === 0) {
+      const artPage = leaf('artwork-page', '', poem.id);
+      addSeaTwinkle(artPage, 'right');
       pages.push(artPage);
+    } else if (poem.artwork && !isSea) {
+      // Standalone illustrations open on a right-hand page.
+      if (pages.length % 2 !== 0) pages.push(leaf('blank-page', ''));
+      pages.push(artworkPage(poem));
     }
   }
   // Keep the back cover on the final right-hand leaf.
   if (pages.length % 2 === 0) pages.push(leaf('endpaper', ''));
   pages.push(leaf('cover back-cover', '<div class="cover-frame"></div>'));
-  pages[2].querySelector('.toc').innerHTML = poems.map((poem, i) => `<button data-page="${starts[i]}"><span>${escape(poem.title)}</span><span>${starts[i]}</span></button>`).join('');
+  const contentsEntries = new Map(poems.map((poem, i) => [poem.id, {poem, page: starts[i]}]));
+  pages[2].querySelector('.toc').innerHTML = contentsGroups.map(([theme, ids]) => `
+    <section class="toc-group" aria-label="${escape(theme)}">
+      <h3>${escape(theme)}</h3>
+      ${ids.map(id => {
+        const {poem, page} = contentsEntries.get(id);
+        return `<button type="button" data-page="${page}"><span>${escape(poem.title)}</span><span>${page}</span></button>`;
+      }).join('')}
+    </section>`).join('');
   pages.forEach((p, i) => {
     if (i > 0 && i < pages.length - 1 && !p.classList.contains('blank-page') && !p.classList.contains('endpaper')) p.insertAdjacentHTML('beforeend', `<span class="page-number" aria-hidden="true">${i}</span>`);
     book.append(p);
@@ -251,6 +318,7 @@ function sync() {
     p.setAttribute('aria-hidden', String(!visible));
     p.querySelectorAll('button').forEach(b => b.tabIndex = visible ? 0 : -1);
   });
+  syncJarVideo();
 }
 function turn(direction) {
   const index = flip.getCurrentPageIndex();
@@ -263,6 +331,7 @@ function setReading(reading) {
   readingView.hidden = !reading;
   document.querySelector('#experience').hidden = reading;
   themeToggle.hidden = reading;
+  syncJarVideo();
   toggle.setAttribute('aria-pressed', String(reading));
   toggle.textContent = reading ? 'Back to the book' : 'Reading view';
   if (!reading) requestAnimationFrame(() => { renderBook(); flip.update(); sync(); });
@@ -296,4 +365,6 @@ document.querySelector('#experience').addEventListener('pointermove', event => {
   dust.addEventListener('animationend', () => dust.remove(), {once:true});
 });
 
+reducedMotion.addEventListener('change', syncJarVideo);
+document.addEventListener('visibilitychange', syncJarVideo);
 startLivingArt();
