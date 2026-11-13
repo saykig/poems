@@ -173,7 +173,7 @@ function renderBook() {
   book = position.querySelector('#book');
   pages = [
     leaf('cover', `${coverStars()}<div class="cover-frame"><h2>SELECTED<br>POEMS</h2><p class="cover-author">SARA KIM</p></div>`),
-    leaf('bookplate', `<div class="dedication"><p>To all those that marvel in the joy of art of poetry</p></div>`),
+    leaf('bookplate', `<div class="dedication"><p>To all those that marvel at the joy and art of poetry</p></div>`),
     leaf('contents-page', '<div class="contents-inner"><h2>Contents</h2><nav class="toc" aria-label="Poems"></nav></div>'),
   ];
   const starts = [];
