@@ -188,7 +188,7 @@ function paginateAtSize(poem, width, height, scale) {
   probe.remove();
   return chunks.map(html => {
     const page = leaf(pageClass, `<div class="poem-flow">${html}</div>`, poem.id);
-    if (scale) page.style.setProperty('--verse-scale', scale);
+    if (scale) page.querySelector('.poem-flow').style.setProperty('--verse-scale', scale);
     return page;
   });
 }
