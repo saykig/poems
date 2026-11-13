@@ -250,6 +250,15 @@ function renderBook() {
     }
     starts.push(pages.length);
     const poemPages = paginate(poem, width, height);
+    if (poem.id === 'i-miss') {
+      const flow = poemPages.at(-1).querySelector('.poem-flow');
+      flow.classList.add('poem-flow-illustrated');
+      flow.insertAdjacentHTML('beforeend', `
+        <figure class="poem-end-illustration">
+          <img src="/art/i-miss-illustration.webp" width="650" height="841"
+               alt="A boy and a small bear walk along a path beneath a tree.">
+        </figure>`);
+    }
     if (isPattern) {
       addPatternAlignment(poemPages[0], 'left');
       addPatternAlignment(poemPages[1], 'right');

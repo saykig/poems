@@ -187,3 +187,24 @@
 @media (prefers-reduced-motion: reduce) {
   .jar-video { display: none; }
 }
+
+.poem-flow-illustrated {
+  display: flex;
+  flex-direction: column;
+}
+.poem-flow-illustrated > :not(.poem-end-illustration) { flex-shrink: 0; }
+.poem-end-illustration {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  width: 38%;
+  margin: .45em auto 0;
+}
+.poem-end-illustration img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center top;
+}
