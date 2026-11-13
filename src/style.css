@@ -171,9 +171,11 @@
 }
 .jar-poem .stanza { margin-bottom: .35em; }
 .jar-poem .poem-flow h2 { margin-bottom: .7em; }
-.jar-spread .poem-flow { z-index: 2; }
+.jar-spread .poem-flow {
+  z-index: 2;
+  text-shadow: 0 1px 2px #00101f, 0 0 5px #00101fb3;
+}
 .jar-spread .page-number { text-shadow: 0 1px 4px #00101f; }
-.jar-spread .poem-flow :is(h2, .poem-line),
 .sea-spread .poem-flow :is(h2, .poem-line) {
   width: fit-content;
   max-width: 100%;
