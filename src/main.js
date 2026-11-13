@@ -27,55 +27,6 @@ jarVideo.muted = true;
 jarVideo.playsInline = true;
 let jarFrame = 0;
 let jarSurfaces = [];
-const echoesArt = new Image();
-let echoesPixels;
-echoesArt.onload = () => {
-  const canvas = document.createElement('canvas');
-  canvas.width = echoesArt.naturalWidth;
-  canvas.height = echoesArt.naturalHeight;
-  const context = canvas.getContext('2d', { willReadFrequently: true });
-  context.drawImage(echoesArt, 0, 0);
-  echoesPixels = context.getImageData(0, 0, canvas.width, canvas.height);
-  if (flip) requestAnimationFrame(paintEchoesVerse);
-};
-echoesArt.src = '/art/echoes-of-silence-spread.webp';
-
-function paintEchoesVerse() {
-  if (!echoesPixels) return;
-  const { width, height, data } = echoesPixels;
-  const luminance = rgb => rgb.map(value => {
-    const channel = value / 255;
-    return channel <= .04045 ? channel / 12.92 : ((channel + .055) / 1.055) ** 2.4;
-  }).reduce((sum, channel, i) => sum + channel * [.2126, .7152, .0722][i], 0);
-  const light = luminance([255, 248, 237]);
-  const dark = luminance([11, 20, 38]);
-  for (const page of pages.filter(p => p.classList.contains('echoes-spread') && p.getAttribute('aria-hidden') === 'false')) {
-    const pageRect = page.getBoundingClientRect();
-    const side = page.classList.contains('echoes-spread-right') ? 1 : 0;
-    for (const element of page.querySelectorAll('.poem-flow h2, .poem-line, .poem-date, .page-number')) {
-      const range = document.createRange();
-      range.selectNodeContents(element);
-      const samples = [];
-      for (const rect of range.getClientRects()) {
-        if (!rect.width || !rect.height) continue;
-        const y = Math.max(0, Math.min(.999, (rect.top + rect.height / 2 - pageRect.top) / pageRect.height));
-        for (const fraction of [.1, .5, .9]) {
-          const x = Math.max(0, Math.min(.999, (rect.left + rect.width * fraction - pageRect.left) / pageRect.width));
-          const pixelX = Math.floor((side + x) * width / 2);
-          const pixelY = Math.floor(y * height);
-          const index = (pixelY * width + pixelX) * 4;
-          const tint = .22 + .23 * y;
-          const rgb = [0, 1, 2].map(i => data[index + i] * (1 - tint) + [7, 21, 46][i] * tint);
-          samples.push(luminance(rgb));
-        }
-      }
-      if (!samples.length) continue;
-      const lightContrast = Math.min(...samples.map(value => (light + .05) / (value + .05)));
-      const darkContrast = Math.min(...samples.map(value => (value + .05) / (dark + .05)));
-      element.style.color = lightContrast >= darkContrast ? '#fff8ed' : '#0b1426';
-    }
-  }
-}
 
 function drawJarFrame() {
   if (jarVideo.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
@@ -386,7 +337,6 @@ function sync() {
     p.querySelectorAll('button').forEach(b => b.tabIndex = visible ? 0 : -1);
   });
   syncJarVideo();
-  paintEchoesVerse();
 }
 let wrapping = false;
 async function wrapBook() {
