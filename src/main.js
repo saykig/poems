@@ -112,8 +112,7 @@ try { savedPageTheme = localStorage.getItem('poems-page-theme'); } catch {}
 setPageTheme(savedPageTheme === 'dark');
 themeToggle.addEventListener('click', () => setPageTheme(themeToggle.getAttribute('aria-pressed') !== 'true'));
 
-// Measure actual typeset stanzas at this viewport; move whole stanzas where possible.
-// If a stanza cannot fit on an empty leaf, split only between original lines.
+// Fill each page line by line. A stanza can continue on the next leaf.
 function paginate(poem, width, height) {
   if (poem.id !== 'blue-bird') return paginateAtSize(poem, width, height);
   let leaves;
@@ -163,19 +162,24 @@ function paginateAtSize(poem, width, height, scale) {
     date.textContent = poem.date;
     flow.append(date);
     if (!fits()) {
-      date.remove();
-      const lastStanza = flow.querySelector('.stanza:last-of-type');
-      if (lastStanza) {
-        lastStanza.remove();
-        save();
-        flow.append(lastStanza, date);
-      } else {
-        save();
-        flow.append(date);
-      }
+      // Use a smaller date gap if the verse and date can share the page.
+      date.style.marginTop = '.8em';
       if (!fits()) {
         date.remove();
+        const lastStanza = flow.querySelector('.stanza:last-of-type');
+        const lastLine = lastStanza?.lastElementChild;
+        if (lastLine) {
+          lastLine.remove();
+          if (!lastStanza.childElementCount) lastStanza.remove();
+        }
         save();
+        if (lastLine) {
+          const continuation = document.createElement('p');
+          continuation.className = 'stanza';
+          continuation.append(lastLine);
+          flow.append(continuation);
+        }
+        date.style.removeProperty('margin-top');
         flow.append(date);
       }
     }
