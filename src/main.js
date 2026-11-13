@@ -1,3 +1,4 @@
+import { initReadingSky } from './reading-sky.js';
 import { startLivingArt } from './living-art.js';
 import { PageFlip } from 'page-flip';
 import '@fontsource/im-fell-english/400.css';
@@ -335,9 +336,11 @@ function turn(direction) {
   if (direction < 0 && index > 0) reducedMotion.matches ? flip.turnToPrevPage() : flip.flipPrev();
 }
 const readingView = document.querySelector('#reading-view');
-readingView.innerHTML = `<h2 class="reading-title">Selected Poems</h2><p class="byline">Sara Kim</p><nav class="reading-toc" aria-label="Poems">${poems.map(p => `<a href="#read-${p.id}">${escape(p.title)}</a>`).join('')}</nav>${poems.map(p => `<article id="read-${p.id}" class="reading-poem" data-poem-id="${p.id}"><h2>${escape(p.title)}</h2>${p.stanzas.map(stanza => stanzaHTML(stanza)).join('')}${dateHTML(p)}${p.artwork ? `<figure class="reading-artwork"><img src="${escape(p.artwork.src)}" alt="${escape(p.artwork.alt)}" loading="lazy"></figure>` : ''}</article>`).join('')}`;
+readingView.innerHTML = `<h2 class="reading-title">Selected Poems</h2><p class="byline">Sara Kim</p>${poems.map(p => `<article id="read-${p.id}" class="reading-poem" data-poem-id="${p.id}"><h2><button class="poem-reveal" type="button" aria-expanded="false" aria-controls="verse-${p.id}">${escape(p.title)}</button></h2><div class="reading-verses" id="verse-${p.id}" hidden>${p.stanzas.map(stanza => stanzaHTML(stanza)).join('')}${dateHTML(p)}</div></article>`).join('')}`;
+const setReadingSky = initReadingSky(readingView, reducedMotion);
 function setReading(reading) {
   readingView.hidden = !reading;
+  setReadingSky(reading);
   document.querySelector('#experience').hidden = reading;
   themeToggle.hidden = reading;
   syncJarVideo();
