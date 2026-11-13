@@ -9,6 +9,12 @@ import './style.css';
 const coverStars = () => Array.from({length:22}, () => `<span class="cover-spark" aria-hidden="true" style="left:${5+Math.random()*90}%;top:${4+Math.random()*92}%;--duration:${4+Math.random()*5}s;--delay:${-Math.random()*9}s"></span>`).join('');
 const ornament = '<span class="ornament" aria-hidden="true">❦</span>';
 const escape = text => text.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const contentsGroups = [
+  ['On Stars', ['the-stars-do-not-know', 'the-space-between-us', 'patterns-against-distance']],
+  ['On Melancholy', ['blue-bird', 'i-miss', 'polaroids']],
+  ['On Friendship', ['september', 'june']],
+  ['On Nature', ['i-wandered-through-the-sea']],
+];
 function lineHTML(line, index) {
   return `<span class="poem-line${line.italic ? ' italic' : ''}" style="--indent:${line.indent}" data-line="${index}">${escape(line.text)}</span>`;
 }
@@ -214,7 +220,15 @@ function renderBook() {
   // Keep the back cover on the final right-hand leaf.
   if (pages.length % 2 === 0) pages.push(leaf('endpaper', ''));
   pages.push(leaf('cover back-cover', '<div class="cover-frame"></div>'));
-  pages[2].querySelector('.toc').innerHTML = poems.map((poem, i) => `<button data-page="${starts[i]}"><span>${escape(poem.title)}</span><span>${starts[i]}</span></button>`).join('');
+  const contentsEntries = new Map(poems.map((poem, i) => [poem.id, {poem, page: starts[i]}]));
+  pages[2].querySelector('.toc').innerHTML = contentsGroups.map(([theme, ids]) => `
+    <section class="toc-group" aria-label="${escape(theme)}">
+      <h3>${escape(theme)}</h3>
+      ${ids.map(id => {
+        const {poem, page} = contentsEntries.get(id);
+        return `<button type="button" data-page="${page}"><span>${escape(poem.title)}</span><span>${page}</span></button>`;
+      }).join('')}
+    </section>`).join('');
   pages.forEach((p, i) => {
     if (i > 0 && i < pages.length - 1 && !p.classList.contains('blank-page') && !p.classList.contains('endpaper')) p.insertAdjacentHTML('beforeend', `<span class="page-number" aria-hidden="true">${i}</span>`);
     book.append(p);
