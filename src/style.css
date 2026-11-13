@@ -220,3 +220,12 @@
 .tamed-art-page[aria-hidden="false"] .tamed-meteor{animation-play-state:running}
 @keyframes tamed-meteor{0%{transform:rotate(-52deg) translateX(0);opacity:0}8%{opacity:.85}65%{opacity:.7}80%,100%{transform:rotate(-52deg) translateX(-165cqw);opacity:0}}
 @media(prefers-reduced-motion:reduce){.tamed-meteor{display:none}}
+
+/* Keep the page palette choice beneath the reading-mode control. */
+.toolbar-actions{flex-direction:column;align-items:flex-end;gap:0;justify-content:center}
+.toolbar-actions button{min-height:23px}
+.toolbar{height:62px}
+main{min-height:calc(100svh - 62px)}
+.gesture{transition:opacity 2s ease,visibility 2s ease}
+.gesture.dismissed{opacity:0;visibility:hidden}
+@media(prefers-reduced-motion:reduce){.gesture{transition:none}}

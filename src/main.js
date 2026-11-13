@@ -83,6 +83,20 @@ const toggle = document.querySelector('#reading-toggle');
 const themeToggle = document.querySelector('#theme-toggle');
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 let flip, pages = [], book, previousWidth = 0;
+const gesture = document.querySelector('#gesture');
+const stateKey = 'poems-reload-position';
+const isReload = performance.getEntriesByType('navigation')[0]?.type === 'reload';
+let restoredState;
+try { if (isReload) restoredState = JSON.parse(sessionStorage.getItem(stateKey) || 'null'); } catch {}
+const currentState = { page: 0, reading: false, expanded: [], scroll: 0 };
+function savePosition() { try { sessionStorage.setItem(stateKey, JSON.stringify(currentState)); } catch {} }
+let hasTurnedPage = false;
+function dismissGesture() {
+  if (hasTurnedPage) return;
+  hasTurnedPage = true;
+  gesture.classList.add('dismissed');
+}
+
 
 function setPageTheme(dark) {
   document.documentElement.dataset.pageTheme = dark ? 'dark' : 'light';
@@ -304,7 +318,7 @@ function renderBook() {
   flip = new PageFlip(book, {width,height,size:'fixed',showCover:true,usePortrait:true,
     maxShadowOpacity:.28,flippingTime:reducedMotion.matches ? 1 : 900,
     mobileScrollSupport:false,showPageCorners:true,disableFlipByClick:true});
-  flip.on('init', sync); flip.on('flip', sync); flip.on('changeOrientation', sync);
+  flip.on('init', sync); flip.on('flip', () => { dismissGesture(); sync(); }); flip.on('changeOrientation', sync);
   flip.on('changeState', e => {
     if(['flipping','user_fold'].includes(e.data)) document.body.dataset.artTurning = 'true'; else delete document.body.dataset.artTurning;
     if (['user_fold','flipping'].includes(e.data) && flip.getCurrentPageIndex() === 0) position.classList.remove('closed');
@@ -326,7 +340,9 @@ function sync() {
   position.classList.toggle('back-closed', index === pages.length - 1 && !portrait);
   position.classList.toggle('portrait', portrait);
   status.textContent = index === 0 ? 'Front cover' : index === pages.length - 1 ? 'Back cover' : `Pages ${index}${portrait ? '' : ` and ${index + 1}`}`;
-  document.querySelector('#gesture').textContent = index === 0 ? 'Pull the cover’s lower corner to begin' : 'Pull a page corner to turn';
+  gesture.textContent = index === 0 ? 'Pull the cover’s lower corner to begin' : 'Pull a page corner to turn';
+  currentState.page = index;
+  savePosition();
   document.querySelector('.toolbar').classList.toggle('on-cover', closed);
   pages.forEach((p, i) => {
     const visible = i === index || (!portrait && !closed && i === index + 1);
@@ -345,6 +361,8 @@ readingView.innerHTML = `<h2 class="reading-title">Selected Poems</h2><p class="
 const setReadingSky = initReadingSky(readingView, reducedMotion);
 function setReading(reading) {
   readingView.hidden = !reading;
+  currentState.reading = reading;
+  savePosition();
   setReadingSky(reading);
   document.querySelector('#experience').hidden = reading;
   themeToggle.hidden = reading;
@@ -354,6 +372,16 @@ function setReading(reading) {
   if (!reading) requestAnimationFrame(() => { renderBook(); flip.update(); sync(); });
 }
 toggle.addEventListener('click', () => setReading(toggle.getAttribute('aria-pressed') !== 'true'));
+readingView.addEventListener('click', event => {
+  if (!event.target.closest('.poem-reveal')) return;
+  requestAnimationFrame(() => {
+    currentState.expanded = [...readingView.querySelectorAll('.poem-reveal[aria-expanded="true"]')].map(button => button.getAttribute('aria-controls'));
+    savePosition();
+  });
+});
+addEventListener('scroll', () => {
+  if (currentState.reading) { currentState.scroll = scrollY; savePosition(); }
+}, {passive:true});
 document.querySelector('#contents').addEventListener('click', () => {
   setReading(false); requestAnimationFrame(() => flip.turnToPage(flip.getOrientation() === 'portrait' ? 2 : 1));
 });
@@ -365,6 +393,21 @@ document.addEventListener('keydown', e => {
 });
 await document.fonts.ready;
 renderBook();
+if (restoredState) {
+  if (Number.isInteger(restoredState.page) && restoredState.page >= 0 && restoredState.page < pages.length) {
+    flip.turnToPage(restoredState.page);
+  }
+  for (const id of restoredState.expanded || []) {
+    const content = readingView.querySelector(`[id="${CSS.escape(id)}"]`);
+    if (!content) continue;
+    content.hidden = false;
+    content.previousElementSibling?.querySelector('.poem-reveal')?.setAttribute('aria-expanded','true');
+  }
+  if (restoredState.reading) {
+    setReading(true);
+    requestAnimationFrame(() => scrollTo(0, Number(restoredState.scroll) || 0));
+  }
+}
 let resizeTimer;
 new ResizeObserver(() => {
   clearTimeout(resizeTimer);
