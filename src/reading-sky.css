@@ -1,15 +1,15 @@
 .reading-sky{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:#030d1d;--daylight:0;--cloud-shift:0px}
 .reading-night,.reading-day,.reading-sky canvas{position:absolute;inset:0;width:100%;height:100%}
-.reading-night{background:#030d1d url('/art/reading-night.webp') center/cover no-repeat}
+.reading-night{background:#030d1d url('/art/reading-night.webp') center top/cover no-repeat;top:32px;height:calc(100% - 32px)}
 .reading-day{inset:-30px; width:calc(100% + 60px);height:calc(100% + 60px);background:#b4d8f3 url('/art/reading-day.webp') center/cover no-repeat;opacity:var(--daylight);transform:translateY(var(--cloud-shift));will-change:opacity,transform}
 body.is-reading{color:#fff0d5;background:#030d1d;--reading-ink:#fff0d5;--reading-glow:#ffe4a4}
 body.is-reading main{position:relative;z-index:1;display:block}
 body.is-reading .toolbar{position:relative;z-index:2;color:var(--reading-ink)}
 body.is-reading .toolbar #contents{visibility:hidden}
-body.is-reading #reading-view{position:relative;width:min(86vw,680px);margin:0 auto;padding:100px 0 22vh;color:var(--reading-ink);font-size:20px;line-height:1.7;text-shadow:0 1px 5px #03102080}
-body.is-reading .reading-title{font-size:clamp(34px,6vw,46px);letter-spacing:.04em}
+body.is-reading #reading-view{position:relative;width:min(86vw,680px);margin:0 auto;padding:100px 0 22vh;color:var(--reading-ink);font-size:18px;line-height:1.7;text-shadow:0 1px 5px #03102080}
+body.is-reading #reading-view .reading-title{font-size:clamp(42px,7vw,56px);letter-spacing:.04em}
 body.is-reading .byline{font-size:17px;margin:8px 0 100px;letter-spacing:.08em;opacity:.8}
-body.is-reading .reading-poem{margin:0 0 64px;scroll-margin-top:70px}
+body.is-reading .reading-poem{margin:0 0 32px;scroll-margin-top:70px}
 body.is-reading .reading-poem h2{margin:0;font-size:clamp(25px,4vw,30px);line-height:1.4}
 .poem-reveal{display:inline-block;position:relative;padding:12px 0;text-align:left;font:inherit;letter-spacing:inherit;font-variant-caps:inherit;color:inherit;transition:color 650ms ease,text-shadow 650ms ease;max-width:100%}
 .poem-reveal:hover,.poem-reveal:focus-visible{color:var(--reading-glow);text-shadow:0 0 13px #edc87588,0 0 30px #f1bd5c44}
@@ -19,5 +19,5 @@ body.is-reading .reading-poem h2{margin:0;font-size:clamp(25px,4vw,30px);line-he
 body.is-reading.reading-daylight{--reading-ink:#122b45;--reading-glow:#613b09}
 body.reading-daylight #reading-view{text-shadow:0 1px 4px #ffffff55}
 body.reading-daylight .poem-reveal:hover,body.reading-daylight .poem-reveal:focus-visible{text-shadow:0 0 14px #fff9dccc}
-@media(max-width:700px){body.is-reading #reading-view{font-size:18px;padding-top:125px}.reading-night{background-position:70% center}body.is-reading .byline{margin-bottom:70px}}
+@media(max-width:700px){body.is-reading #reading-view{font-size:16.5px;padding-top:125px}.reading-night{background-position:70% top}body.is-reading .byline{margin-bottom:70px}}
 @media(prefers-reduced-motion:reduce){.poem-reveal{transition:none}.reading-day{transform:none;will-change:auto}}

@@ -20,16 +20,10 @@ export function initReadingSky(view, reducedMotion) {
   function paint() {
     frame = 0;
     if (view.hidden) return;
-    // Follow poem positions, not total page height: expanding a poem must not rewind dawn.
-    const headings = [...view.querySelectorAll('.reading-poem h2')];
-    const horizon = innerHeight * .3;
-    let position = 0;
-    for (let i=0; i<headings.length-1; i++) {
-      const top = headings[i].getBoundingClientRect().top;
-      const next = headings[i+1].getBoundingClientRect().top;
-      if (horizon >= top) position = i + clamp((horizon-top)/Math.max(1,next-top));
-    }
-    const progress = scrollY < 8 ? 0 : clamp(position / Math.max(1,headings.length-1));
+    // A leisurely journey measured in scroll distance. A compact title list
+    // need not reach full daylight; opening poems provides more sky to travel.
+    // Fixed distance also avoids changing the sky when a poem is expanded.
+    const progress = clamp(scrollY / Math.max(2200, innerHeight * 2.8));
     const daylight = clamp((progress-.12)/.76);
     sky.style.setProperty('--daylight', daylight);
     // Switch ink at the midpoint, rather than interpolating through unreadable grey.
