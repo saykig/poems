@@ -324,7 +324,9 @@ function renderBook() {
     if (['user_fold','flipping'].includes(e.data) && flip.getCurrentPageIndex() === 0) position.classList.remove('closed');
     if (e.data === 'read') sync();
   });
+  position.insertAdjacentHTML('beforeend', '<button class="book-return" type="button" aria-label="Turn the book over to its front cover" hidden>Turn to the front cover</button>');
   flip.loadFromHTML(pages);
+  position.querySelector('.book-return').addEventListener('click', wrapBook);
   if (oldPoem) {
     const index = pages.findIndex(p => p.dataset.poemId === oldPoem && [...p.querySelectorAll('[data-line]')].some(l => Number(l.dataset.line) === oldLine));
     const restoredIndex = index >= 0 ? index : pages.findIndex(p => p.dataset.poemId === oldPoem);
@@ -339,6 +341,7 @@ function sync() {
   position.classList.toggle('closed', index === 0 && !portrait);
   position.classList.toggle('back-closed', index === pages.length - 1 && !portrait);
   position.classList.toggle('portrait', portrait);
+  position.querySelector('.book-return').hidden = index !== pages.length - 1;
   status.textContent = index === 0 ? 'Front cover' : index === pages.length - 1 ? 'Back cover' : `Pages ${index}${portrait ? '' : ` and ${index + 1}`}`;
   gesture.textContent = index === 0 ? 'Pull the cover’s lower corner to begin' : 'Pull a page corner to turn';
   currentState.page = index;
@@ -351,8 +354,30 @@ function sync() {
   });
   syncJarVideo();
 }
+let wrapping = false;
+async function wrapBook() {
+  if (wrapping || flip.getCurrentPageIndex() !== pages.length - 1) return;
+  wrapping = true;
+  try {
+    if (!reducedMotion.matches) {
+      await position.animate([
+        {transform: getComputedStyle(position).transform, opacity:1},
+        {transform:'translateX(0) rotateY(-88deg)', opacity:.8}
+      ], {duration:620, easing:'cubic-bezier(.55,.05,.75,.45)'}).finished;
+    }
+    flip.turnToPage(0);
+    sync();
+    if (!reducedMotion.matches) {
+      await position.animate([
+        {transform:'translateX(0) rotateY(88deg)', opacity:.8},
+        {transform:getComputedStyle(position).transform, opacity:1}
+      ], {duration:620, easing:'cubic-bezier(.2,.65,.3,1)'}).finished;
+    }
+  } finally { wrapping = false; }
+}
 function turn(direction) {
   const index = flip.getCurrentPageIndex();
+  if (direction > 0 && index === pages.length - 1) { wrapBook(); return; }
   if (direction > 0 && index < pages.length - 1) reducedMotion.matches ? flip.turnToNextPage() : flip.flipNext();
   if (direction < 0 && index > 0) reducedMotion.matches ? flip.turnToPrevPage() : flip.flipPrev();
 }
