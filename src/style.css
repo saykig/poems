@@ -206,5 +206,5 @@ main{min-height:calc(100svh - 62px)}
 :root .page.echoes-spread-right { background-position: center, right center; }
 :root[data-page-theme] .page.echoes-spread { color: #fff; }
 .echoes-spread .poem-flow, .echoes-spread .page-number {
-  mix-blend-mode: difference;
+  color: #fff8ed;
 }
