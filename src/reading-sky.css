@@ -1,6 +1,6 @@
 .reading-sky{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:#030d1d;--daylight:0;--cloud-shift:0px}
 .reading-night,.reading-day,.reading-sky canvas{position:absolute;inset:0;width:100%;height:100%}
-.reading-night{background:#030d1d url('/art/reading-night.webp') center top/cover no-repeat;top:32px;height:calc(100% - 32px)}
+.reading-night{background:#030d1d url('/art/reading-night.webp') center top/cover no-repeat;top:0;height:100%}
 .reading-day{inset:-30px; width:calc(100% + 60px);height:calc(100% + 60px);background:#b4d8f3 url('/art/reading-day.webp') center/cover no-repeat;opacity:var(--daylight);transform:translateY(var(--cloud-shift));will-change:opacity,transform}
 body.is-reading{color:#fff0d5;background:#030d1d;--reading-ink:#fff0d5;--reading-glow:#ffe4a4}
 body.is-reading main{position:relative;z-index:1;display:block}
