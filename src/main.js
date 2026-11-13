@@ -11,7 +11,7 @@ const coverStars = () => Array.from({length:22}, () => `<span class="cover-spark
 const ornament = '<span class="ornament" aria-hidden="true">❦</span>';
 const escape = text => text.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const contentsGroups = [
-  ['On Stars', ['the-stars-do-not-know', 'the-space-between-us', 'patterns-against-distance']],
+  ['On Stars', ['the-space-between-us', 'the-stars-do-not-know', 'patterns-against-distance']],
   ['On Melancholy', ['blue-bird', 'i-miss', 'polaroids']],
   ['On Friendship', ['september', 'june', 'the-friend-i-tamed']],
   ['On Nature', ['i-wandered-through-the-sea']],
