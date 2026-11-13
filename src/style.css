@@ -136,3 +136,6 @@
   }
 }
 .pattern-alignment .pattern-painted-light { --star-rest: 0; }
+
+.contents-page{background:#06264b;color:#d8bd84}
+:root[data-page-theme=dark] .contents-page{background:#06264b!important;color:#d8bd84!important}
