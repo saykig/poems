@@ -12,7 +12,7 @@ const escape = text => text.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>
 const contentsGroups = [
   ['On Stars', ['the-stars-do-not-know', 'the-space-between-us', 'patterns-against-distance']],
   ['On Melancholy', ['blue-bird', 'i-miss', 'polaroids']],
-  ['On Friendship', ['september', 'june']],
+  ['On Friendship', ['september', 'june', 'the-friend-i-tamed']],
   ['On Nature', ['i-wandered-through-the-sea']],
 ];
 const poemsById = new Map(poemData.map(poem => [poem.id, poem]));
