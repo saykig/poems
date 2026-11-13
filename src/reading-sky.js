@@ -20,11 +20,13 @@ export function initReadingSky(view, reducedMotion) {
   function paint() {
     frame = 0;
     if (view.hidden) return;
-    // A leisurely journey measured in scroll distance. A compact title list
-    // need not reach full daylight; opening poems provides more sky to travel.
-    // Fixed distance also avoids changing the sky when a poem is expanded.
-    const progress = clamp(scrollY / Math.max(2200, innerHeight * 2.8));
-    const daylight = clamp((progress-.12)/.76);
+    // Balance night and day across the current scrollable reading length.
+    // ResizeObserver recalculates the journey when poems open or close.
+    const scrollRange = Math.max(1, document.documentElement.scrollHeight - innerHeight);
+    const progress = clamp(scrollY / scrollRange);
+    // Equal night/day holds, with dawn centered halfway through the reading.
+    const dawn = clamp((progress - .3) / .4);
+    const daylight = dawn * dawn * (3 - 2 * dawn);
     sky.style.setProperty('--daylight', daylight);
     // Switch ink at the midpoint, rather than interpolating through unreadable grey.
     document.body.classList.toggle('reading-daylight', daylight > .48);
