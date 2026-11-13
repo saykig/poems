@@ -180,6 +180,7 @@
 @media (min-width: 701px) {
   .sea-spread-left:has(.poem-flow h2) + .sea-spread-right .poem-flow {
     padding-top: calc(var(--book-heading-size) * 2.4 + 5cqw);
+    left: 6%;
   }
 }
 @media (prefers-reduced-motion: reduce) {
