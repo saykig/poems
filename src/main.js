@@ -367,7 +367,8 @@ new ResizeObserver(() => {
 }).observe(stage);
 
 let lastDust = 0;
-document.querySelector('#experience').addEventListener('pointermove', event => {
+document.addEventListener('pointermove', event => {
+  if (!event.target.closest('#experience:not([hidden]), #reading-view:not([hidden])')) return;
   if (event.pointerType !== 'mouse' || reducedMotion.matches || performance.now()-lastDust < 45) return;
   lastDust = performance.now();
   const dust = document.createElement('span');
