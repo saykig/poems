@@ -260,6 +260,11 @@ function renderBook() {
                alt="A boy and a small bear walk along a path beneath a tree.">
         </figure>`);
     }
+    if (poem.id === 'the-friend-i-tamed') {
+      const finalPage = poemPages.at(-1);
+      finalPage.classList.add('tamed-art-page');
+      finalPage.insertAdjacentHTML('beforeend', '<figure class="tamed-illustration"><img src="/art/the-friend-i-tamed.png" alt="The Little Prince and a fox beside a rose and small stars."></figure><span class="tamed-meteor" aria-hidden="true"><span></span></span>');
+    }
     if (isPattern) {
       addPatternAlignment(poemPages[0], 'left');
       addPatternAlignment(poemPages[1], 'right');

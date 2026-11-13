@@ -209,3 +209,14 @@
   object-fit: contain;
   object-position: center top;
 }
+
+/* Meteor head and gradient tail adapted from Magic UI Meteors (MIT).
+   https://github.com/magicuidesign/magicui/tree/main/apps/www/registry/magicui/meteors.tsx */
+.tamed-illustration{position:absolute;pointer-events:none;width:100%;right:-25%;bottom:-9%;margin:0}
+.tamed-illustration img{display:block;width:100%;height:auto}
+.tamed-art-page .poem-flow{z-index:2}
+.tamed-meteor{position:absolute;left:98%;top:3%;width:3px;height:3px;border-radius:50%;background:#fff4bd;box-shadow:0 0 7px 2px #d7af57;pointer-events:none;opacity:0;animation:tamed-meteor 8s linear infinite;animation-play-state:paused;z-index:1}
+.tamed-meteor>span{position:absolute;top:50%;left:0;width:100px;height:2px;transform:translateY(-50%);background:linear-gradient(to right,#e7c674,transparent)}
+.tamed-art-page[aria-hidden="false"] .tamed-meteor{animation-play-state:running}
+@keyframes tamed-meteor{0%{transform:rotate(-52deg) translateX(0);opacity:0}8%{opacity:.85}65%{opacity:.7}80%,100%{transform:rotate(-52deg) translateX(-165cqw);opacity:0}}
+@media(prefers-reduced-motion:reduce){.tamed-meteor{display:none}}
