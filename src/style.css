@@ -169,3 +169,11 @@ main{min-height:calc(100svh - 62px)}
 .book-return{display:block;margin:12px auto 0;min-height:28px;color:#e7cc91;font-size:clamp(13px,2vw,17px);text-shadow:0 1px 5px #061526}
 .book-return:hover,.book-return:focus-visible{color:#fff4d4}
 .book-return:not([hidden]) + .gesture{display:none}
+
+/* Use the same verse size during pagination and on the rendered leaves. */
+.page[data-poem-id="echoes-of-silence"] .poem-flow {
+  font-size: calc(var(--book-poem-size) * .94);
+}
+.reading-poem[data-poem-id="echoes-of-silence"] .reading-verses {
+  font-size: .94em;
+}
