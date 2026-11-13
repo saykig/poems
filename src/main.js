@@ -12,7 +12,7 @@ const ornament = '<span class="ornament" aria-hidden="true">❦</span>';
 const escape = text => text.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const contentsGroups = [
   ['On Stars', ['the-space-between-us', 'the-stars-do-not-know']],
-  ['On Melancholy', ['blue-bird', 'i-miss', 'polaroids', 'echoes-of-silence']],
+  ['On Melancholy', ['blue-bird', 'echoes-of-silence', 'polaroids', 'i-miss']],
   ['On Friendship', ['september', 'june', 'the-friend-i-tamed']],
   ['On Nature', ['i-wandered-through-the-sea']],
 ];
@@ -239,7 +239,8 @@ function renderBook() {
   const starts = [];
   for (const poem of poems) {
     const isSea = poem.id === 'i-wandered-through-the-sea';
-    if (isSea && pages.length % 2 === 0) {
+    const isEchoes = poem.id === 'echoes-of-silence';
+    if ((isSea || isEchoes) && pages.length % 2 === 0) {
       pages.push(leaf('blank-page', ''));
     }
     starts.push(pages.length);
@@ -257,6 +258,11 @@ function renderBook() {
       const finalPage = poemPages.at(-1);
       finalPage.classList.add('tamed-art-page');
       finalPage.insertAdjacentHTML('beforeend', '<figure class="tamed-illustration"><img src="/art/the-friend-i-tamed.png" alt="The Little Prince and a fox beside a rose and small stars."></figure><span class="tamed-meteor" aria-hidden="true"><span></span></span>');
+    }
+    if (isEchoes) {
+      if (poemPages.length === 1) poemPages.push(leaf('artwork-page', '', poem.id));
+      poemPages[0].classList.add('echoes-spread', 'echoes-spread-left');
+      poemPages[1].classList.add('echoes-spread', 'echoes-spread-right');
     }
     for (const page of poemPages) {
       const side = pages.length % 2 ? 'left' : 'right';

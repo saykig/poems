@@ -193,3 +193,19 @@ main{min-height:calc(100svh - 62px)}
   bottom: 12%;
   font-size: calc(var(--book-poem-size) * var(--verse-scale, 1));
 }
+
+/* Each leaf shows its half of the same painting. */
+:root .page.echoes-spread {
+  background-color: #132746;
+  background-image: linear-gradient(#07152e47, #07152ea3), url('/art/echoes-of-silence-spread.webp') !important;
+  background-size: 100% 100%, 200% 100%;
+  background-repeat: no-repeat;
+  color: #fff5e4;
+}
+:root .page.echoes-spread-left { background-position: center, left center; }
+:root .page.echoes-spread-right { background-position: center, right center; }
+:root[data-page-theme] .page.echoes-spread { color: #fff5e4; }
+.echoes-spread .poem-flow, .echoes-spread .page-number {
+  color: #fff5e4;
+  text-shadow: 0 1px 3px #07152e99;
+}
