@@ -169,7 +169,7 @@
   height: 100%;
   pointer-events: none;
 }
-.jar-poem .stanza { margin-bottom: .35em; }
+.jar-poem .stanza { margin-bottom: .7em; }
 .jar-poem .poem-flow h2 { margin-bottom: .7em; }
 .jar-spread .poem-flow {
   z-index: 2;
