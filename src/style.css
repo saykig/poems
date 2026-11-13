@@ -179,5 +179,6 @@ main{min-height:calc(100svh - 62px)}
 }
 
 .page[data-poem-id="blue-bird"] .poem-flow {
+  bottom: 14%;
   font-size: calc(var(--book-poem-size) * var(--verse-scale, 1));
 }

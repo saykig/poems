@@ -117,7 +117,7 @@ themeToggle.addEventListener('click', () => setPageTheme(themeToggle.getAttribut
 function paginate(poem, width, height) {
   if (poem.id !== 'blue-bird') return paginateAtSize(poem, width, height);
   let leaves;
-  for (const scale of [.94, .90, .86, .82, .78, .74, .70]) {
+  for (const scale of [.86, .82, .78, .74, .70, .66]) {
     leaves = paginateAtSize(poem, width, height, scale);
     if (leaves.length <= 2) break;
   }
