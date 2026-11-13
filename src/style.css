@@ -68,6 +68,24 @@
 .reading-artwork{width:min(100%,430px);margin:48px auto 0;background:#071b33}
 .reading-artwork img{display:block;width:100%;height:auto}
 
+/* One continuous painting across the sea poem and its facing art leaf. */
+:root .page.sea-spread{
+  background-color:#06172d!important;
+  background-image:url('/art/i-wandered-through-the-sea-spread.webp')!important;
+  background-size:200% auto!important;
+  background-repeat:no-repeat!important;
+  color:#fff2d9!important;
+}
+:root .page.sea-spread-left{background-position:left center!important}
+:root .page.sea-spread-right{background-position:right center!important}
+.sea-spread-left::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,#031525bb 0%,#031525a6 67%,#03152550 100%);pointer-events:none}
+.sea-spread .poem-flow{z-index:2;text-shadow:0 1px 3px #00101f,0 0 6px #00101fe0}
+.sea-spread .page-number{color:#fff2d9;z-index:3;text-shadow:0 1px 4px #00101f}
+.sea-twinkle{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.sea-light{opacity:0;animation:sea-glow var(--period) var(--phase) ease-in-out infinite}
+@keyframes sea-glow{0%,100%{opacity:0}50%{opacity:.8}}
+@media(prefers-reduced-motion:reduce){.sea-light{animation:none;opacity:.18}}
+
 /* The supplied painting fits the 860:580 open spread, split at the gutter. */
 :root .page.pattern-spread{
   background-color:#0b2b48!important;

@@ -158,7 +158,24 @@ function addPatternAlignment(page, side) {
 
 function artworkPage(poem) {
   const {src, alt} = poem.artwork;
+  if (poem.id === 'i-wandered-through-the-sea') return leaf('artwork-page sea-spread sea-spread-right', '', poem.id);
   return leaf('artwork-page', `<figure><img src="${escape(src)}" alt="${escape(alt)}" loading="eager"></figure>`, poem.id);
+}
+
+// Stars are positioned on the original 1448 × 1086 painting, then clipped to each leaf.
+const seaLights = [
+  [48,57],[156,118],[209,30],[342,101],[474,127],[563,52],[609,173],
+  [750,181],[838,58],[873,137],[943,42],[1023,182],[1069,127],
+  [1178,160],[1206,244],[1329,92],[1374,206],[112,305],[394,283],
+  [569,280],[690,274],[876,296],[1109,317],[1295,274],[1399,292],
+  [232,179],[425,200],[931,266],[1021,323]
+];
+function addSeaTwinkle(page, side) {
+  page.classList.add('sea-spread', `sea-spread-${side}`);
+  const left = side === 'left' ? 0 : 724;
+  const lights = seaLights.filter(([x]) => x >= left && x < left + 724)
+    .map(([x,y],i) => `<ellipse class="sea-light" cx="${x}" cy="${y}" rx="${7+i%3}" ry="${9+i%3}" style="--period:${3.8+i%6*.67}s;--phase:${-i*.73}s"/>`).join('');
+  page.insertAdjacentHTML('afterbegin', `<svg class="sea-twinkle" viewBox="${left} 55 724 976" preserveAspectRatio="none" aria-hidden="true" focusable="false"><defs><radialGradient id="sea-warm-${side}"><stop stop-color="#fff8d9"/><stop offset=".28" stop-color="#ffd994" stop-opacity=".86"/><stop offset=".55" stop-color="#ffbb70" stop-opacity=".35"/><stop offset="1" stop-color="#ffad6b" stop-opacity="0"/></radialGradient></defs><g fill="url(#sea-warm-${side})">${lights}${side === 'right' ? '<ellipse class="sea-light sea-moon" cx="981" cy="238" rx="23" ry="26" style="--period:6.4s;--phase:-1.7s"/>' : ''}</g></svg>`);
 }
 function renderBook() {
   const width = stage.clientWidth / (matchMedia('(max-width:700px)').matches ? 1 : 2);
@@ -184,11 +201,14 @@ function renderBook() {
       addPatternAlignment(poemPages[0], 'left');
       addPatternAlignment(poemPages[1], 'right');
     }
+    if (poem.id === 'i-wandered-through-the-sea') addSeaTwinkle(poemPages[poemPages.length - 1], 'left');
     pages.push(...poemPages);
     if (poem.artwork) {
       // Art stays with its poem and opens on a right-hand page.
       if (pages.length % 2 !== 0) pages.push(leaf('blank-page', ''));
-      pages.push(artworkPage(poem));
+      const artPage = artworkPage(poem);
+      if (poem.id === 'i-wandered-through-the-sea') addSeaTwinkle(artPage, 'right');
+      pages.push(artPage);
     }
   }
   // Keep the back cover on the final right-hand leaf.
