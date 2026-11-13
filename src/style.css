@@ -155,4 +155,6 @@
 .pattern-alignment .pattern-painted-light { --star-rest: 0; }
 
 .contents-page{background:#06264b;color:#d8bd84}
+.toc-group{margin:0 0 3.2%}.toc-group h3{font-family:'Cormorant Garamond',Georgia,serif;font-size:3.7cqw;font-weight:400;line-height:1.1;margin:0 0 .5%;color:inherit}.toc-group button{font-size:3.1cqw;line-height:1.1;padding:.45% 0 .45% 5%;color:inherit}.toc-group button:hover{color:#fff0c3}
+@media(max-width:700px){.toc-group{margin-bottom:3%}.toc-group h3{font-size:4cqw}.toc-group button{font-size:3.3cqw;padding:.5% 0 .5% 5%}}
 :root[data-page-theme=dark] .contents-page{background:#06264b!important;color:#d8bd84!important}
