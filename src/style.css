@@ -176,6 +176,7 @@
   text-shadow: 0 1px 2px #00101f, 0 0 5px #00101fb3;
 }
 .jar-spread-right .poem-flow { left: 6%; }
+.jar-spread-right[data-poem-id="the-stars-do-not-know"] .poem-flow { left: 3%; }
 .jar-spread .page-number { text-shadow: 0 1px 4px #00101f; }
 /* Leave the moon visible above the verse on the facing leaf. */
 @media (min-width: 701px) {
