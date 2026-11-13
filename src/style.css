@@ -188,3 +188,8 @@ main{min-height:calc(100svh - 62px)}
   bottom: 14%;
   font-size: calc(var(--book-poem-size) * var(--verse-scale, 1));
 }
+
+.page[data-poem-id="polaroids"] .poem-flow {
+  bottom: 12%;
+  font-size: calc(var(--book-poem-size) * var(--verse-scale, 1));
+}

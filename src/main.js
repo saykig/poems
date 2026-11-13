@@ -114,11 +114,15 @@ themeToggle.addEventListener('click', () => setPageTheme(themeToggle.getAttribut
 
 // Fill each page line by line. A stanza can continue on the next leaf.
 function paginate(poem, width, height) {
-  if (poem.id !== 'blue-bird') return paginateAtSize(poem, width, height);
+  const pageLimit = { 'blue-bird': 2, polaroids: 1 }[poem.id];
+  if (!pageLimit) return paginateAtSize(poem, width, height);
+  const scales = poem.id === 'polaroids'
+    ? [.94, .90, .86, .82, .78, .74, .70, .66, .62, .58, .54, .50]
+    : [.86, .82, .78, .74, .70, .66];
   let leaves;
-  for (const scale of [.86, .82, .78, .74, .70, .66]) {
+  for (const scale of scales) {
     leaves = paginateAtSize(poem, width, height, scale);
-    if (leaves.length <= 2) break;
+    if (leaves.length <= pageLimit) break;
   }
   return leaves;
 }
