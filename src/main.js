@@ -78,6 +78,9 @@ function leaf(classes, html, poemId) {
 }
 const position = document.querySelector('#book-position');
 const stage = document.querySelector('.stage');
+stage.insertAdjacentHTML('afterend', '<button class="book-return" type="button" aria-label="Turn the book over to its front cover" hidden>Turn to the front cover</button>');
+const returnButton = stage.nextElementSibling;
+returnButton.addEventListener('click', wrapBook);
 const status = document.querySelector('#page-status');
 const toggle = document.querySelector('#reading-toggle');
 const themeToggle = document.querySelector('#theme-toggle');
@@ -245,7 +248,9 @@ function renderBook() {
   if (Math.abs(previousWidth - width) < 1 && flip) return;
   previousWidth = width;
   const height = width * 580 / 430;
-  const oldPage = pages[flip?.getCurrentPageIndex() ?? 0];
+  const oldIndex = flip?.getCurrentPageIndex() ?? 0;
+  const oldPage = pages[oldIndex];
+  const wasBackCover = oldPage?.classList.contains('back-cover');
   const oldPoem = oldPage?.dataset.poemId;
   const oldLine = Number(oldPage?.querySelector('[data-line]')?.dataset.line ?? 0);
   if (flip) flip.destroy();
@@ -324,13 +329,15 @@ function renderBook() {
     if (['user_fold','flipping'].includes(e.data) && flip.getCurrentPageIndex() === 0) position.classList.remove('closed');
     if (e.data === 'read') sync();
   });
-  position.insertAdjacentHTML('beforeend', '<button class="book-return" type="button" aria-label="Turn the book over to its front cover" hidden>Turn to the front cover</button>');
   flip.loadFromHTML(pages);
-  position.querySelector('.book-return').addEventListener('click', wrapBook);
-  if (oldPoem) {
+  if (wasBackCover) {
+    flip.turnToPage(pages.length - 1);
+  } else if (oldPoem) {
     const index = pages.findIndex(p => p.dataset.poemId === oldPoem && [...p.querySelectorAll('[data-line]')].some(l => Number(l.dataset.line) === oldLine));
     const restoredIndex = index >= 0 ? index : pages.findIndex(p => p.dataset.poemId === oldPoem);
     if (restoredIndex >= 0) flip.turnToPage(restoredIndex);
+  } else if (oldIndex > 0) {
+    flip.turnToPage(Math.min(oldIndex, pages.length - 1));
   }
   book.querySelectorAll('[data-page]').forEach(button => button.addEventListener('click', () => flip.turnToPage(Number(button.dataset.page))));
 }
@@ -341,7 +348,7 @@ function sync() {
   position.classList.toggle('closed', index === 0 && !portrait);
   position.classList.toggle('back-closed', index === pages.length - 1 && !portrait);
   position.classList.toggle('portrait', portrait);
-  position.querySelector('.book-return').hidden = index !== pages.length - 1;
+  returnButton.hidden = index !== pages.length - 1;
   status.textContent = index === 0 ? 'Front cover' : index === pages.length - 1 ? 'Back cover' : `Pages ${index}${portrait ? '' : ` and ${index + 1}`}`;
   gesture.textContent = index === 0 ? 'Pull the cover’s lower corner to begin' : 'Pull a page corner to turn';
   currentState.page = index;

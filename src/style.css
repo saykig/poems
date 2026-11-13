@@ -230,12 +230,8 @@ main{min-height:calc(100svh - 62px)}
 .gesture.dismissed{opacity:0;visibility:hidden}
 @media(prefers-reduced-motion:reduce){.gesture{transition:none}}
 
-/* A final turn carries the closed back cover around to the front. */
+/* The return button sits below the stage, outside the cover transform. */
 .stage{perspective:1600px}
-.book-return{position:absolute;inset:0;z-index:30;display:grid;place-items:end center;padding-bottom:5%;color:#e7cc91;font-size:clamp(13px,2vw,17px);text-shadow:0 1px 5px #061526;cursor:pointer}
+.book-return{display:block;margin:12px auto 0;min-height:28px;color:#e7cc91;font-size:clamp(13px,2vw,17px);text-shadow:0 1px 5px #061526}
 .book-return:hover,.book-return:focus-visible{color:#fff4d4}
-
-/* Place the closing prompt in the reserved space below the book. */
-#experience:has(.book-return:not([hidden])) .stage{margin-bottom:60px}
-.book-return{inset:0 0 -60px;align-items:end;justify-items:center;padding:0 0 16px;white-space:nowrap}
-.book-return::first-line{line-height:1}
+.book-return:not([hidden]) + .gesture{display:none}
