@@ -172,8 +172,12 @@ main{min-height:calc(100svh - 62px)}
 
 /* Use the same verse size during pagination and on the rendered leaves. */
 .page[data-poem-id="echoes-of-silence"] .poem-flow {
-  font-size: calc(var(--book-poem-size) * .893);
+  font-size: calc(var(--book-poem-size) * .8037);
 }
 .reading-poem[data-poem-id="echoes-of-silence"] .reading-verses {
-  font-size: .893em;
+  font-size: .8037em;
+}
+
+.page[data-poem-id="blue-bird"] .poem-flow {
+  font-size: calc(var(--book-poem-size) * var(--verse-scale, 1));
 }

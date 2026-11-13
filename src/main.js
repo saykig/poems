@@ -115,8 +115,19 @@ themeToggle.addEventListener('click', () => setPageTheme(themeToggle.getAttribut
 // Measure actual typeset stanzas at this viewport; move whole stanzas where possible.
 // If a stanza cannot fit on an empty leaf, split only between original lines.
 function paginate(poem, width, height) {
+  if (poem.id !== 'blue-bird') return paginateAtSize(poem, width, height);
+  let leaves;
+  for (const scale of [.94, .90, .86, .82, .78, .74, .70]) {
+    leaves = paginateAtSize(poem, width, height, scale);
+    if (leaves.length <= 2) break;
+  }
+  return leaves;
+}
+
+function paginateAtSize(poem, width, height, scale) {
   const pageClass = jarPoems.has(poem.id) ? 'poem-page jar-poem' : 'poem-page';
   const probe = leaf(`${pageClass} measuring`, '<div class="poem-flow"></div>', poem.id);
+  if (scale) probe.style.setProperty('--verse-scale', scale);
   Object.assign(probe.style, {width:`${width}px`,height:`${height}px`});
   document.body.append(probe);
   const flow = probe.querySelector('.poem-flow');
@@ -171,7 +182,11 @@ function paginate(poem, width, height) {
   }
   if (flow.querySelector('.stanza') || flow.querySelector('.poem-date')) chunks.push(flow.innerHTML);
   probe.remove();
-  return chunks.map(html => leaf(pageClass, `<div class="poem-flow">${html}</div>`, poem.id));
+  return chunks.map(html => {
+    const page = leaf(pageClass, `<div class="poem-flow">${html}</div>`, poem.id);
+    if (scale) page.style.setProperty('--verse-scale', scale);
+    return page;
+  });
 }
 
 // Bright points sampled from the painting in the spread's 720 × 486 coordinates.
