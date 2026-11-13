@@ -172,8 +172,8 @@ main{min-height:calc(100svh - 62px)}
 
 /* Use the same verse size during pagination and on the rendered leaves. */
 .page[data-poem-id="echoes-of-silence"] .poem-flow {
-  font-size: calc(var(--book-poem-size) * .94);
+  font-size: calc(var(--book-poem-size) * .893);
 }
 .reading-poem[data-poem-id="echoes-of-silence"] .reading-verses {
-  font-size: .94em;
+  font-size: .893em;
 }
