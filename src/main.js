@@ -323,8 +323,9 @@ function renderBook() {
   flip = new PageFlip(book, {width,height,size:'fixed',showCover:true,usePortrait:true,
     maxShadowOpacity:.28,flippingTime:reducedMotion.matches ? 1 : 900,
     mobileScrollSupport:false,showPageCorners:true,disableFlipByClick:true});
-  flip.on('init', sync); flip.on('flip', () => { dismissGesture(); sync(); }); flip.on('changeOrientation', sync);
+  flip.on('init', sync); flip.on('flip', sync); flip.on('changeOrientation', sync);
   flip.on('changeState', e => {
+    if (['user_fold', 'flipping'].includes(e.data)) dismissGesture();
     if(['flipping','user_fold'].includes(e.data)) document.body.dataset.artTurning = 'true'; else delete document.body.dataset.artTurning;
     if (['user_fold','flipping'].includes(e.data) && flip.getCurrentPageIndex() === 0) position.classList.remove('closed');
     if (e.data === 'read') sync();
@@ -350,7 +351,7 @@ function sync() {
   position.classList.toggle('portrait', portrait);
   returnButton.hidden = index !== pages.length - 1;
   status.textContent = index === 0 ? 'Front cover' : index === pages.length - 1 ? 'Back cover' : `Pages ${index}${portrait ? '' : ` and ${index + 1}`}`;
-  gesture.textContent = index === 0 ? 'Pull the cover’s lower corner to begin' : 'Pull a page corner to turn';
+  if (!hasTurnedPage) gesture.textContent = index === 0 ? 'Pull the cover’s lower corner to begin' : 'Pull a page corner to turn';
   currentState.page = index;
   savePosition();
   document.querySelector('.toolbar').classList.toggle('on-cover', closed);
@@ -384,6 +385,7 @@ async function wrapBook() {
 }
 function turn(direction) {
   const index = flip.getCurrentPageIndex();
+  if (direction > 0 || (direction < 0 && index > 0)) dismissGesture();
   if (direction > 0 && index === pages.length - 1) { wrapBook(); return; }
   if (direction > 0 && index < pages.length - 1) reducedMotion.matches ? flip.turnToNextPage() : flip.flipNext();
   if (direction < 0 && index > 0) reducedMotion.matches ? flip.turnToPrevPage() : flip.flipPrev();
