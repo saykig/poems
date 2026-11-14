@@ -11,7 +11,7 @@ const coverStars = () => Array.from({length:22}, () => `<span class="cover-spark
 const ornament = '<span class="ornament" aria-hidden="true">❦</span>';
 const escape = text => text.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const contentsGroups = [
-  ['On Stars', ['the-space-between-us', 'the-stars-do-not-know']],
+  ['On Stars', ['the-space-between-us', 'the-stars-do-not-know', 'patterns-against-distance']],
   ['On Melancholy', ['blue-bird', 'echoes-of-silence', 'polaroids', 'i-miss']],
   ['On Friendship', ['september', 'june', 'the-friend-i-tamed']],
   ['On Nature', ['i-wandered-through-the-sea']],
@@ -129,6 +129,18 @@ function paginate(poem, width, height) {
 
 function paginateAtSize(poem, width, height, scale) {
   const pageClass = jarPoems.has(poem.id) ? 'poem-page jar-poem' : 'poem-page';
+  if (poem.id === 'patterns-against-distance') {
+    let offset = 0;
+    const makePage = (stanzas, titled) => {
+      const verse = stanzas.map(stanza => {
+        const html = stanzaHTML(stanza, offset);
+        offset += stanza.length;
+        return html;
+      }).join('');
+      return leaf(pageClass, `<div class="poem-flow">${titled ? `<h2>${escape(poem.title)}</h2>` : ''}${verse}</div>`, poem.id);
+    };
+    return [makePage(poem.stanzas.slice(0, 4), true), makePage(poem.stanzas.slice(4), false)];
+  }
   const probe = leaf(`${pageClass} measuring`, '<div class="poem-flow"></div>', poem.id);
   if (scale) probe.style.setProperty('--verse-scale', scale);
   Object.assign(probe.style, {width:`${width}px`,height:`${height}px`});
@@ -198,6 +210,40 @@ function paginateAtSize(poem, width, height, scale) {
 }
 
 // Bright points sampled from the painting in the spread's 720 × 486 coordinates.
+const paintedPatternStars = [
+  [183, 22], [143, 56], [180, 129], [52, 143], [242, 105], [336, 41],
+  [265, 199], [380, 89], [468, 75], [616, 96], [651, 71], [632, 6],
+  [538, 142], [566, 196], [46, 327],
+];
+
+function patternTwinkleTiming() {
+  const period = 7 + Math.random() * 9;
+  const phase = -Math.random() * period;
+  return `--period:${period}s;--phase:${phase}s`;
+}
+
+function addPatternAlignment(page, side) {
+  const viewLeft = side === 'left' ? 0 : 360;
+  page.classList.add('pattern-spread', `pattern-spread-${side}`);
+  const paintedLights = paintedPatternStars
+    .filter(([x]) => x >= viewLeft && x < viewLeft + 360)
+    .map(([x, y]) => `<circle class="pattern-painted-light" cx="${x}" cy="${y}" r="1.35"
+                           style="${patternTwinkleTiming()}"/>`).join('');
+  page.insertAdjacentHTML('afterbegin', `
+    <svg class="pattern-alignment" viewBox="${viewLeft} 0 360 486"
+         preserveAspectRatio="none" aria-hidden="true" focusable="false">
+      ${paintedLights}
+      <path class="alignment-light alignment-star" transform="translate(270 20) scale(1.24)"
+            d="M 0 -2.5 L .55 -.55 L 2 0 L .55 .55 L 0 2.5 L -.55 .55 L -2 0 L -.55 -.55 Z"
+              style="${patternTwinkleTiming()}"/>
+      <path class="alignment-light" transform="translate(406 29)"
+            d="M 0 -5 C -6 -5 -7 3 -2 5 C 0 6 3 5 4 2 C 0 4 -4 0 0 -5 Z"
+            style="--period:7s;--phase:-3.1s"/>
+      <path class="alignment-light alignment-star" transform="translate(552 39) scale(1.38)"
+            d="M 0 -2.5 L .55 -.55 L 2 0 L .55 .55 L 0 2.5 L -.55 .55 L -2 0 L -.55 -.55 Z"
+              style="${patternTwinkleTiming()}"/>
+    </svg>`);
+}
 function artworkPage(poem) {
   const {src, alt} = poem.artwork;
   return leaf('artwork-page', `<figure><img src="${escape(src)}" alt="${escape(alt)}" loading="eager"></figure>`, poem.id);
@@ -240,7 +286,8 @@ function renderBook() {
   for (const poem of poems) {
     const isSea = poem.id === 'i-wandered-through-the-sea';
     const isEchoes = poem.id === 'echoes-of-silence';
-    if ((isSea || isEchoes) && pages.length % 2 === 0) {
+    const isPattern = poem.id === 'patterns-against-distance';
+    if ((isSea || isEchoes || isPattern) && pages.length % 2 === 0) {
       pages.push(leaf('blank-page', ''));
     }
     starts.push(pages.length);
@@ -263,6 +310,10 @@ function renderBook() {
       if (poemPages.length === 1) poemPages.push(leaf('artwork-page', '', poem.id));
       poemPages[0].classList.add('echoes-spread', 'echoes-spread-left');
       poemPages[1].classList.add('echoes-spread', 'echoes-spread-right');
+    }
+    if (isPattern) {
+      addPatternAlignment(poemPages[0], 'left');
+      addPatternAlignment(poemPages[1], 'right');
     }
     for (const page of poemPages) {
       const side = pages.length % 2 ? 'left' : 'right';
