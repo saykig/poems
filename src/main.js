@@ -12,7 +12,7 @@ const ornament = '<span class="ornament" aria-hidden="true">❦</span>';
 const escape = text => text.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const contentsGroups = [
   ['On Stars', ['the-space-between-us', 'the-stars-do-not-know']],
-  ['On Melancholy', ['blue-bird', 'echoes-of-silence', 'polaroids', 'i-miss']],
+  ['On Melancholy', ['blue-bird', 'the-summer-i-knew', 'echoes-of-silence', 'polaroids', 'i-miss']],
   ['On Friendship', ['september', 'june', 'the-friend-i-tamed']],
   ['On Nature', ['i-wandered-through-the-sea']],
 ];
@@ -128,7 +128,7 @@ function paginate(poem, width, height) {
 }
 
 function paginateAtSize(poem, width, height, scale) {
-  const pageClass = jarPoems.has(poem.id) ? 'poem-page jar-poem' : 'poem-page';
+  const pageClass = `poem-page${jarPoems.has(poem.id) ? ' jar-poem' : ''}${poem.whitespace === 'verbatim' ? ' verbatim-poem' : ''}`;
   if (poem.id === 'patterns-against-distance') {
     let offset = 0;
     const makePage = (stanzas, titled) => {
@@ -149,6 +149,14 @@ function paginateAtSize(poem, width, height, scale) {
   const chunks = [];
   let offset = 0;
   const heading = () => chunks.length ? '' : `<h2>${escape(poem.title)}</h2>`;
+  if (poem.whitespace === 'verbatim') {
+    // Measure the full, unwrapped lines with their original tab stops before pagination.
+    probe.style.setProperty('--book-poem-size', `${Math.max(12, width * .03)}px`);
+    flow.innerHTML = poem.stanzas.map(stanza => stanzaHTML(stanza)).join('');
+    const widest = Math.max(...[...flow.querySelectorAll('.poem-line')].map(line => line.getBoundingClientRect().width));
+    scale = Math.min(scale ?? 1, (flow.clientWidth - 1) / widest);
+    flow.style.setProperty('--verse-scale', scale);
+  }
   flow.innerHTML = heading();
   const fits = () => flow.scrollHeight <= flow.clientHeight + 1;
   const save = () => { chunks.push(flow.innerHTML); flow.innerHTML = heading(); };
@@ -418,7 +426,7 @@ function turn(direction) {
   if (direction < 0 && index > 0) reducedMotion.matches ? flip.turnToPrevPage() : flip.flipPrev();
 }
 const readingView = document.querySelector('#reading-view');
-readingView.innerHTML = `<h2 class="reading-title">Selected Poems</h2><p class="byline">Sara Kim</p>${poems.map(p => `<article id="read-${p.id}" class="reading-poem" data-poem-id="${p.id}"><h2><button class="poem-reveal" type="button" aria-expanded="false" aria-controls="verse-${p.id}">${escape(p.title)}</button></h2><div class="reading-verses" id="verse-${p.id}" hidden>${p.stanzas.map(stanza => stanzaHTML(stanza)).join('')}${dateHTML(p)}</div></article>`).join('')}`;
+readingView.innerHTML = `<h2 class="reading-title">Selected Poems</h2><p class="byline">Sara Kim</p>${poems.map(p => `<article id="read-${p.id}" class="reading-poem${p.whitespace === 'verbatim' ? ' verbatim-poem' : ''}" data-poem-id="${p.id}"><h2><button class="poem-reveal" type="button" aria-expanded="false" aria-controls="verse-${p.id}">${escape(p.title)}</button></h2><div class="reading-verses" id="verse-${p.id}" hidden>${p.stanzas.map(stanza => stanzaHTML(stanza)).join('')}${dateHTML(p)}</div></article>`).join('')}`;
 const setReadingSky = initReadingSky(readingView, reducedMotion);
 function setReading(reading) {
   readingView.hidden = !reading;

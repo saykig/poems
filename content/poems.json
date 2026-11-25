@@ -1225,6 +1225,279 @@
     "date": "Nov 10, 2026"
   },
   {
+    "id": "the-summer-i-knew",
+    "title": "The Summer I Knew",
+    "whitespace": "verbatim",
+    "stanzas": [
+      [
+        {
+          "text": "Beneath the sun's brilliant ray",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "I thought the summer had no end",
+          "italic": false,
+          "indent": 0
+        }
+      ],
+      [
+        {
+          "text": "Oh, what a child I had become",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "How little of the world I knew,  ",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "For all the years I had wandered it  ",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "Seemed but a prelude unto you. ",
+          "italic": false,
+          "indent": 0
+        }
+      ],
+      [
+        {
+          "text": "How carelessly I came to think  ",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "That summer was a place to stay,  ",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "That all the things I came to love  ",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "Would never learn to go away",
+          "italic": false,
+          "indent": 0
+        }
+      ],
+      [
+        {
+          "text": "But I was frightened even then",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "And you grew distant in my fear",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "The more I felt the winter come,  ",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "The more I longed to hold you near",
+          "italic": false,
+          "indent": 0
+        }
+      ],
+      [
+        {
+          "text": "Forgive the coward that I was,  ",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "Yet had I come to you for shelter",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "Who trembled at the slightest rain",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "\tWhy did I leave clothed in shame,",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "\t\tFrom the very arms I wished to embrace?",
+          "italic": false,
+          "indent": 0
+        }
+      ],
+      [
+        {
+          "text": "Now every road I wander down  ",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "\tSeems but another road to you",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "\t\t\t\tAnd every season that arrives  ",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "I mourn the summer that I knew. ",
+          "italic": false,
+          "indent": 0
+        }
+      ],
+      [
+        {
+          "text": "The trees have given up their gold",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "\t\t\t\tThe birds have long since taken       flight",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "\t\tYet still          I search the empty skies  ",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "\t\t\t\t\t\t\t\t\t\t\t\t\tFor some familiar summer light",
+          "italic": false,
+          "indent": 0
+        }
+      ],
+      [
+        {
+          "text": "Perhaps it is         my greatest grief  ",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "\t\t\tThat all the love I could not show  ",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "\t\t\t\t\t\t\tIn all the things I left unsaid",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "Should blossom  now             beneath the snow,  ",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "\t\t\t\tWhen there is none to watch it grow,",
+          "italic": false,
+          "indent": 0
+        }
+      ],
+      [
+        {
+          "text": "For now they live within my days  ",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "\tAnd wander through            my dreams i n ste a  d",
+          "italic": false,
+          "indent": 0
+        }
+      ],
+      [
+        {
+          "text": "And though the tide would carry me  ",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "\tBeyond the shores of yesterday   ,  ",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "I fear,              some part of me will wait  ",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "Where once the golden sunlight lay.",
+          "italic": false,
+          "indent": 0
+        }
+      ],
+      [
+        {
+          "text": "And all the years                    that are to be,",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "\t\t\t\t\t\tThere was a summer, ",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "\t\t\t\t\t\t\t   long long ago,  ",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "When all the world was dear to me",
+          "italic": false,
+          "indent": 0
+        }
+      ],
+      [
+        {
+          "text": "For even now when winter comes",
+          "italic": false,
+          "indent": 0
+        },
+        {
+          "text": "And all the world is strange and new",
+          "italic": false,
+          "indent": 0
+        }
+      ],
+      [
+        {
+          "text": "I find myself still longing for  ",
+          "italic": false,
+          "indent": 0
+        }
+      ],
+      [
+        {
+          "text": "The child I was ",
+          "italic": false,
+          "indent": 0
+        }
+      ],
+      [
+        {
+          "text": "when I     knew    y    o        u",
+          "italic": false,
+          "indent": 0
+        }
+      ]
+    ],
+    "date": "November 2026"
+  },
+  {
     "id": "september",
     "title": "September",
     "stanzas": [

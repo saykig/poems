@@ -275,3 +275,21 @@ main{min-height:calc(100svh - 62px)}
   }
 }
 .pattern-alignment .pattern-painted-light { --star-rest: 0; }
+
+/* Preserve the manuscript's tabs and internal spaces without reflowing its lines. */
+.verbatim-poem .poem-line {
+  white-space: pre;
+  tab-size: 4;
+  width: max-content;
+  min-height: 1lh;
+}
+.verbatim-poem .stanza { margin-bottom: 1lh; }
+.verbatim-poem .stanza:last-child { margin-bottom: 0; }
+.page.verbatim-poem .poem-flow {
+  font-size: calc(var(--book-poem-size) * var(--verse-scale, 1));
+}
+.verbatim-poem .poem-date { margin-top: 2lh; }
+.reading-poem.verbatim-poem .reading-verses {
+  overflow-x: auto;
+  scrollbar-color: var(--reading-ink) transparent;
+}
